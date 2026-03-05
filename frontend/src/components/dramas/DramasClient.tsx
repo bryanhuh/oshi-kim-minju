@@ -6,90 +6,19 @@ import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import type { Work } from "@/types";
 
-const mockWorks: Work[] = [
-  {
-    id: 1,
-    title: "Ask the Stars",
-    titleKorean: "별에게 물어봐",
-    year: 2023,
-    role: "Oh Bok-soon",
-    poster: "https://image.tmdb.org/t/p/w500/pdOiUbJ0vEJfh5OGFG8y1e4InQ7.jpg",
-    synopsis:
-      "A romantic comedy set in space. Oh Bok-soon is a crew member aboard the first commercial space station. A surgeon boards the station and the two fall in love.",
-    trailerUrl: null,
-    type: "drama",
-  },
-  {
-    id: 2,
-    title: "Trolley",
-    titleKorean: "트롤리",
-    year: 2022,
-    role: "Kim Soo-bin",
-    poster: "https://image.tmdb.org/t/p/w500/oqALkLrRRlBjZMQ5bw4QXDQy68g.jpg",
-    synopsis:
-      "A politician's wife with a dark secret is forced into a moral dilemma. Kim Soo-bin is a high school student whose life becomes entangled in the political scandal.",
-    trailerUrl: null,
-    type: "drama",
-  },
-  {
-    id: 3,
-    title: "The Midnight Studio",
-    titleKorean: "심야화실",
-    year: 2024,
-    role: "Hong Ye-seul",
-    poster: "https://image.tmdb.org/t/p/w500/zzIv3CQVIsKHxW37OkfHW5RkG7C.jpg",
-    synopsis:
-      "A midnight art studio where a young woman discovers a mysterious painter who only works at night. Hong Ye-seul is an art student drawn into the world of the studio.",
-    trailerUrl: null,
-    type: "drama",
-  },
-  {
-    id: 4,
-    title: "Welcome to Waikiki 2",
-    titleKorean: "으라차차 와이키키 2",
-    year: 2019,
-    role: "Han Yoon-ah",
-    poster: "https://image.tmdb.org/t/p/w500/koDAMr1EmReCFFJuiUIyBVx3Ypa.jpg",
-    synopsis:
-      "The second season of the comedy series about three dreamers running a guesthouse in Itaewon, Seoul. Minju plays Han Yoon-ah, a cheerful young woman connected to the guesthouse crew.",
-    trailerUrl: null,
-    type: "drama",
-  },
-  {
-    id: 5,
-    title: "Produce 48",
-    titleKorean: "프로듀스 48",
-    year: 2018,
-    role: "Contestant (Finalist)",
-    poster: "https://image.tmdb.org/t/p/w500/hJ7LBa817QEr7TBi5eA7t6QcsdQ.jpg",
-    synopsis:
-      "A collaboration survival show between Mnet and AKB48. 96 Korean and Japanese trainees compete for 12 spots in a new K-pop group IZ*ONE. Minju finished in 12th place.",
-    trailerUrl: null,
-    type: "variety",
-  },
-  {
-    id: 6,
-    title: "IZ*ONE Chu",
-    titleKorean: "아이즈원츄",
-    year: 2018,
-    role: "Herself",
-    poster: null,
-    synopsis:
-      "A reality web series following the daily lives and activities of the IZ*ONE members. Minju's warm personality and natural humor made her a fan favorite on the show.",
-    trailerUrl: null,
-    type: "variety",
-  },
-];
+const TYPES = ["All", "Drama", "Movie", "Variety", "Videos"];
 
-const TYPES = ["All", "Drama", "Movie", "Variety"];
-
-export default function DramasClient() {
+export default function DramasClient({ works }: { works: Work[] }) {
   const [activeType, setActiveType] = useState("All");
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
 
-  const filtered = activeType === "All"
-    ? mockWorks
-    : mockWorks.filter((w) => w.type?.toLowerCase() === activeType.toLowerCase());
+  const filtered =
+    activeType === "All"
+      ? works
+      : works.filter((w) => {
+          const typeKey = activeType === "Videos" ? "video" : activeType.toLowerCase();
+          return w.type?.toLowerCase() === typeKey;
+        });
 
   return (
     <div className="px-6 max-w-7xl mx-auto">
@@ -117,6 +46,11 @@ export default function DramasClient() {
       </div>
 
       {/* Grid */}
+      {filtered.length === 0 && (
+        <p className="text-center text-[#2a1a20]/40 py-20 text-sm tracking-widest">
+          No works found.
+        </p>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {filtered.map((work, i) => (

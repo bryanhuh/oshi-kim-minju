@@ -7,7 +7,7 @@ export interface Work {
   poster: string | null;
   synopsis: string | null;
   trailerUrl: string | null;
-  type: "drama" | "movie" | "variety" | null;
+  type: "drama" | "movie" | "variety" | "video" | null;
 }
 
 export interface GalleryImage {
