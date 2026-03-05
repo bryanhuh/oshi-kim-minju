@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pink-soft: #f7c6d9;
+  --color-pink-blush: #f4a7c1;
+  --color-pink-deep: #e8809e;
+  --color-pink-mist: #fdf0f5;
+  --color-pink-glow: rgba(247, 198, 217, 0.3);
+
+  --font-serif: var(--font-noto-serif-kr);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: #fdf7fa;
+  --foreground: #2a1a20;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), "Inter", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #fdf0f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #f4a7c1;
+  border-radius: 3px;
+}
+
+/* Glass morphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(247, 198, 217, 0.4);
+}
+
+.glass-dark {
+  background: rgba(42, 26, 32, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(247, 198, 217, 0.2);
+}
+
+/* Pink glow effect */
+.pink-glow {
+  box-shadow: 0 0 30px rgba(244, 167, 193, 0.4),
+              0 0 60px rgba(247, 198, 217, 0.2);
+}
+
+/* Text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #e8809e 0%, #f4a7c1 50%, #f7c6d9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Cinematic overlay */
+.cinematic-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(42, 26, 32, 0.6) 100%
+  );
+  pointer-events: none;
+}
