@@ -1,10 +1,72 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useState, useRef } from "react";
+
+function EasterEggReveal({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.8, y: 20 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[300] flex items-center justify-center"
+      onClick={onClose}
+    >
+      <div className="glass rounded-3xl p-10 max-w-sm mx-6 text-center shadow-2xl border border-[#f7c6d9]/60">
+        <motion.div
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+          className="text-5xl mb-4"
+        >
+          ✦
+        </motion.div>
+        <p className="font-[family-name:var(--font-noto-serif-kr)] text-[#f4a7c1] text-xs tracking-[0.4em] mb-3">
+          SECRET FOUND
+        </p>
+        <h3 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-xl font-light mb-3">
+          You found a hidden memory
+        </h3>
+        <p className="text-[#2a1a20]/50 text-sm leading-relaxed mb-6">
+          True fans look deeper. There is a hidden world waiting for you at{" "}
+          <span className="text-[#e8809e]">/izone-memory</span>
+        </p>
+        <Link
+          href="/izone-memory"
+          onClick={(e) => e.stopPropagation()}
+          className="inline-block px-6 py-2.5 bg-gradient-to-r from-[#f4a7c1] to-[#e8809e] text-white text-xs tracking-widest rounded-full hover:opacity-90 transition-opacity"
+        >
+          Enter the Archive →
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function HeroOverlay() {
+  const [clickCount, setClickCount] = useState(0);
+  const [showEgg, setShowEgg] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleTitleClick = () => {
+    const next = clickCount + 1;
+    setClickCount(next);
+
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setClickCount(0), 1500);
+
+    if (next >= 3) {
+      setClickCount(0);
+      setShowEgg(true);
+    }
+  };
   return (
+    <>
+    <AnimatePresence>
+      {showEgg && <EasterEggReveal onClose={() => setShowEgg(false)} />}
+    </AnimatePresence>
+
     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
       {/* Top fade */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#fdf7fa] to-transparent" />
@@ -23,7 +85,9 @@ export default function HeroOverlay() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="font-[family-name:var(--font-noto-serif-kr)] text-6xl md:text-8xl font-light text-[#2a1a20] tracking-wider mb-4"
+          onClick={handleTitleClick}
+          className="font-[family-name:var(--font-noto-serif-kr)] text-6xl md:text-8xl font-light text-[#2a1a20] tracking-wider mb-4 cursor-default select-none"
+          title=""
         >
           Kim Minju
         </motion.h1>
@@ -76,5 +140,6 @@ export default function HeroOverlay() {
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#fdf7fa] to-transparent" />
     </div>
+    </>
   );
 }
