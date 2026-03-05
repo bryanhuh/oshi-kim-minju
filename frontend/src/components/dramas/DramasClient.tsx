@@ -72,14 +72,22 @@ export default function DramasClient({ works }: { works: Work[] }) {
                     fill
                     unoptimized={needsProxy(work.poster)}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = "none";
+                      const fallback = target.parentElement?.querySelector(".poster-fallback") as HTMLElement | null;
+                      if (fallback) fallback.style.display = "flex";
+                    }}
                   />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#fde8f0] to-[#f7c6d9] flex items-center justify-center">
-                    <span className="font-[family-name:var(--font-noto-serif-kr)] text-[#e8809e]/60 text-4xl">
-                      {work.titleKorean?.[0] ?? work.title?.[0]}
-                    </span>
-                  </div>
-                )}
+                ) : null}
+                <div
+                  className="poster-fallback absolute inset-0 bg-gradient-to-br from-[#fde8f0] to-[#f7c6d9] items-center justify-center"
+                  style={{ display: work.poster ? "none" : "flex" }}
+                >
+                  <span className="font-[family-name:var(--font-noto-serif-kr)] text-[#e8809e]/60 text-4xl">
+                    {work.titleKorean?.[0] ?? work.title?.[0]}
+                  </span>
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
                   <p className="text-[#f7c6d9] text-xs tracking-widest mb-1">{work.year}</p>

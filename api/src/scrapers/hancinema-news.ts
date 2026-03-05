@@ -15,15 +15,7 @@ interface NewsEntry {
 export async function scrapeHancinemaNews(): Promise<void> {
   console.log("[hancinema-news] Fetching Kim Minju news page...");
 
-  const res = await fetch(NEWS_URL, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      Accept:
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-      "Accept-Language": "en-US,en;q=0.9",
-    },
-  });
+  const res = await fetch(NEWS_URL);
 
   if (!res.ok) {
     throw new Error(`[hancinema-news] Failed to fetch: HTTP ${res.status}`);
