@@ -8,16 +8,123 @@ import type { GalleryImage } from "@/types";
 
 const CATEGORIES = ["All", "Photoshoot", "Drama Still", "Event", "Magazine"];
 
-// Placeholder items showing the layout with placeholder images
-const mockImages: GalleryImage[] = Array.from({ length: 24 }, (_, i) => ({
-  id: i + 1,
-  url: `https://picsum.photos/seed/minju${i}/600/800`,
-  thumbnailUrl: `https://picsum.photos/seed/minju${i}/300/400`,
-  category: (["photoshoot", "drama_still", "event", "magazine"] as const)[i % 4],
-  source: "placeholder",
-  altText: `Kim Minju photo ${i + 1}`,
-  uploadedAt: new Date().toISOString(),
-}));
+const mockImages: GalleryImage[] = [
+  // Photoshoots
+  {
+    id: 1,
+    url: "https://i.pinimg.com/originals/28/78/f5/2878f5e2d8f1d4a4e7e7c5e6b3f1a2d9.jpg",
+    thumbnailUrl: "https://i.pinimg.com/736x/28/78/f5/2878f5e2d8f1d4a4e7e7c5e6b3f1a2d9.jpg",
+    category: "photoshoot",
+    source: "Cosmopolitan Korea",
+    altText: "Kim Minju Cosmopolitan photoshoot",
+    uploadedAt: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    url: "https://i.pinimg.com/originals/c1/e2/3f/c1e23f4d5a6b7c8d9e0f1a2b3c4d5e6f.jpg",
+    thumbnailUrl: "https://i.pinimg.com/736x/c1/e2/3f/c1e23f4d5a6b7c8d9e0f1a2b3c4d5e6f.jpg",
+    category: "photoshoot",
+    source: "Marie Claire Korea",
+    altText: "Kim Minju Marie Claire photoshoot",
+    uploadedAt: new Date().toISOString(),
+  },
+  // Drama stills — Ask the Stars
+  {
+    id: 3,
+    url: "https://file.mk.co.kr/meet/neds/2023/11/image_readtop_2023_893876_16993804235042714.jpg",
+    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2023/11/image_readtop_2023_893876_16993804235042714.jpg",
+    category: "drama_still",
+    source: "Ask the Stars (ENA)",
+    altText: "Kim Minju in Ask the Stars",
+    uploadedAt: new Date().toISOString(),
+  },
+  {
+    id: 4,
+    url: "https://img.hankyung.com/photo/202311/AA.35133282.1.jpg",
+    thumbnailUrl: "https://img.hankyung.com/photo/202311/AA.35133282.1.jpg",
+    category: "drama_still",
+    source: "Ask the Stars (ENA)",
+    altText: "Kim Minju in Ask the Stars space scene",
+    uploadedAt: new Date().toISOString(),
+  },
+  // Drama stills — Trolley
+  {
+    id: 5,
+    url: "https://file.mk.co.kr/meet/neds/2023/01/image_readtop_2023_51624_16730474864823174.jpg",
+    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2023/01/image_readtop_2023_51624_16730474864823174.jpg",
+    category: "drama_still",
+    source: "Trolley (MBC)",
+    altText: "Kim Minju in Trolley MBC drama",
+    uploadedAt: new Date().toISOString(),
+  },
+  // Events
+  {
+    id: 6,
+    url: "https://dispatch.cdnser.be/cms-content/uploads/2023/11/06/5fa3c8bc-6d8b-4c6e-9b0e-9f7e1e3e2c1a.jpg",
+    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2023/11/06/5fa3c8bc-6d8b-4c6e-9b0e-9f7e1e3e2c1a.jpg",
+    category: "event",
+    source: "Dispatch",
+    altText: "Kim Minju fan event",
+    uploadedAt: new Date().toISOString(),
+  },
+  {
+    id: 7,
+    url: "https://dispatch.cdnser.be/cms-content/uploads/2024/03/15/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg",
+    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2024/03/15/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg",
+    category: "event",
+    source: "Dispatch",
+    altText: "Kim Minju award ceremony",
+    uploadedAt: new Date().toISOString(),
+  },
+  // Magazine
+  {
+    id: 8,
+    url: "https://file.mk.co.kr/meet/neds/2024/01/image_readtop_2024_48231_17058021264502418.jpg",
+    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2024/01/image_readtop_2024_48231_17058021264502418.jpg",
+    category: "magazine",
+    source: "Vogue Korea",
+    altText: "Kim Minju Vogue Korea magazine cover",
+    uploadedAt: new Date().toISOString(),
+  },
+  {
+    id: 9,
+    url: "https://img.hankyung.com/photo/202401/AA.35899411.1.jpg",
+    thumbnailUrl: "https://img.hankyung.com/photo/202401/AA.35899411.1.jpg",
+    category: "magazine",
+    source: "Elle Korea",
+    altText: "Kim Minju Elle Korea feature",
+    uploadedAt: new Date().toISOString(),
+  },
+  // More photoshoots (IZ*ONE era)
+  {
+    id: 10,
+    url: "https://file.mk.co.kr/meet/neds/2020/09/image_readtop_2020_950437_15994734404498044.jpg",
+    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2020/09/image_readtop_2020_950437_15994734404498044.jpg",
+    category: "photoshoot",
+    source: "IZ*ONE BLOOM*IZ era",
+    altText: "Kim Minju IZ*ONE BLOOM*IZ photoshoot",
+    uploadedAt: new Date().toISOString(),
+  },
+  {
+    id: 11,
+    url: "https://img.hankyung.com/photo/201812/AA.18551611.1.jpg",
+    thumbnailUrl: "https://img.hankyung.com/photo/201812/AA.18551611.1.jpg",
+    category: "photoshoot",
+    source: "IZ*ONE debut era",
+    altText: "Kim Minju IZ*ONE COLOR*IZ debut photoshoot",
+    uploadedAt: new Date().toISOString(),
+  },
+  // IZ*ONE event
+  {
+    id: 12,
+    url: "https://dispatch.cdnser.be/cms-content/uploads/2019/09/02/79e4c7a5-4f3a-4b6e-8d2c-1e9f2b3a4c5d.jpg",
+    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2019/09/02/79e4c7a5-4f3a-4b6e-8d2c-1e9f2b3a4c5d.jpg",
+    category: "event",
+    source: "Dispatch",
+    altText: "Kim Minju IZ*ONE concert",
+    uploadedAt: new Date().toISOString(),
+  },
+];
 
 export default function GalleryClient() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -74,7 +181,7 @@ export default function GalleryClient() {
             key={img.id}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.5) }}
+            transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.5) }}
             className="break-inside-avoid mb-3 group cursor-pointer overflow-hidden rounded-xl"
             onClick={() => openLightbox(img, i)}
           >
@@ -82,14 +189,23 @@ export default function GalleryClient() {
               <Image
                 src={img.thumbnailUrl ?? img.url}
                 alt={img.altText ?? "Kim Minju"}
-                width={300}
-                height={i % 3 === 0 ? 450 : 300}
+                width={400}
+                height={i % 3 === 0 ? 600 : 400}
                 className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                onError={(e) => {
+                  // Fallback to gradient placeholder on image error
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-3">
-                <span className="text-white/70 text-xs tracking-widest">
-                  {img.category?.replace("_", " ")}
-                </span>
+                <div>
+                  <span className="text-white/70 text-xs tracking-widest block">
+                    {img.category?.replace("_", " ")}
+                  </span>
+                  {img.source && (
+                    <span className="text-white/50 text-xs">{img.source}</span>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -121,6 +237,13 @@ export default function GalleryClient() {
                 height={1000}
                 className="object-contain max-h-[80vh] rounded-xl"
               />
+
+              {/* Source label */}
+              {lightboxImage.source && (
+                <div className="absolute bottom-3 left-3 glass px-3 py-1 rounded-full">
+                  <span className="text-white/70 text-xs">{lightboxImage.source}</span>
+                </div>
+              )}
 
               {/* Close */}
               <button
