@@ -3,8 +3,27 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import SectionHeader from "@/components/ui/SectionHeader";
 import type { GalleryImage } from "@/types";
+
+const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="w-full rounded-2xl flex items-center justify-center"
+      style={{ height: "68vh", background: "linear-gradient(to bottom, #fde8f0, #fdf7fa)" }}
+    >
+      <motion.p
+        animate={{ opacity: [0.4, 1, 0.4] }}
+        transition={{ repeat: Infinity, duration: 1.8 }}
+        className="text-[#f4a7c1] text-xs tracking-[0.4em]"
+      >
+        Loading 3D gallery...
+      </motion.p>
+    </div>
+  ),
+});
 
 const CATEGORIES = ["All", "Photoshoot", "Drama Still", "Event", "Magazine"];
 
@@ -130,6 +149,7 @@ export default function GalleryClient() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
 
   const filtered = activeCategory === "All"
     ? mockImages
@@ -157,61 +177,132 @@ export default function GalleryClient() {
         subtitle="A visual journey through Minju's world"
       />
 
-      {/* Category filter */}
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {CATEGORIES.map((cat) => (
+      {/* View mode toggle + category filter */}
+      <div className="flex flex-col items-center gap-5 mb-12">
+        {/* Mode toggle */}
+        <div className="glass rounded-full p-1 flex gap-1">
           <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeCategory === cat
-                ? "bg-[#f4a7c1] text-white pink-glow"
-                : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-              }`}
+            onClick={() => setViewMode("grid")}
+            className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${
+              viewMode === "grid"
+                ? "bg-[#f4a7c1] text-white"
+                : "text-[#2a1a20]/50 hover:text-[#e8809e]"
+            }`}
           >
-            {cat}
+            Grid
           </button>
-        ))}
+          <button
+            onClick={() => setViewMode("3d")}
+            className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${
+              viewMode === "3d"
+                ? "bg-[#f4a7c1] text-white"
+                : "text-[#2a1a20]/50 hover:text-[#e8809e]"
+            }`}
+          >
+            3D Museum
+          </button>
+        </div>
+
+        {/* Category filter — only in grid mode */}
+        <AnimatePresence>
+          {viewMode === "grid" && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="flex flex-wrap justify-center gap-3"
+            >
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${
+                    activeCategory === cat
+                      ? "bg-[#f4a7c1] text-white pink-glow"
+                      : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      {/* 3D Museum Mode */}
+      <AnimatePresence mode="wait">
+        {viewMode === "3d" && (
+          <motion.div
+            key="3d"
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.4 }}
+            className="mb-12"
+          >
+            <Gallery3DScene
+              images={mockImages}
+              onImageClick={(img) => {
+                const idx = mockImages.findIndex((m) => m.id === img.id);
+                openLightbox(img, idx >= 0 ? idx : 0);
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Masonry grid */}
-      <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
-        {filtered.map((img, i) => (
+      <AnimatePresence mode="wait">
+        {viewMode === "grid" && (
           <motion.div
-            key={img.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.5) }}
-            className="break-inside-avoid mb-3 group cursor-pointer overflow-hidden rounded-xl"
-            onClick={() => openLightbox(img, i)}
+            key="grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="relative overflow-hidden rounded-xl">
-              <Image
-                src={img.thumbnailUrl ?? img.url}
-                alt={img.altText ?? "Kim Minju"}
-                width={400}
-                height={i % 3 === 0 ? 600 : 400}
-                className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                onError={(e) => {
-                  // Fallback to gradient placeholder on image error
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-3">
-                <div>
-                  <span className="text-white/70 text-xs tracking-widest block">
-                    {img.category?.replace("_", " ")}
-                  </span>
-                  {img.source && (
-                    <span className="text-white/50 text-xs">{img.source}</span>
-                  )}
-                </div>
-              </div>
+            <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+              {filtered.map((img, i) => (
+                <motion.div
+                  key={img.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.5) }}
+                  className="break-inside-avoid mb-3 group cursor-pointer overflow-hidden rounded-xl"
+                  onClick={() => openLightbox(img, i)}
+                >
+                  <div className="relative overflow-hidden rounded-xl">
+                    <Image
+                      src={img.thumbnailUrl ?? img.url}
+                      alt={img.altText ?? "Kim Minju"}
+                      width={400}
+                      height={i % 3 === 0 ? 600 : 400}
+                      className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-3">
+                      <div>
+                        <span className="text-white/70 text-xs tracking-widest block">
+                          {img.category?.replace("_", " ")}
+                        </span>
+                        {img.source && (
+                          <span className="text-white/50 text-xs">{img.source}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
-        ))}
-      </div>
+        )}
+      </AnimatePresence>
 
-      {/* Lightbox */}
+      {/* Lightbox — always accessible regardless of view mode */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div
