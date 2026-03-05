@@ -84,3 +84,30 @@ body {
   );
   pointer-events: none;
 }
+
+/* Bloom radial glow */
+.bloom-glow {
+  box-shadow:
+    0 0 60px rgba(247, 198, 217, 0.6),
+    0 0 120px rgba(244, 167, 193, 0.3),
+    0 0 200px rgba(232, 128, 158, 0.15);
+}
+
+/* Soft entrance animation */
+@keyframes softEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.soft-entrance {
+  animation: softEntrance 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+

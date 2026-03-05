@@ -3,6 +3,8 @@ import { Noto_Serif_KR, Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
+import TransitionLayout from "@/components/ui/TransitionLayout";
+import ChatAssistant from "@/components/ui/ChatAssistant";
 
 const notoSerifKr = Noto_Serif_KR({
   variable: "--font-noto-serif-kr",
@@ -40,8 +42,11 @@ export default function RootLayout({
     <html lang="ko" className={`${notoSerifKr.variable} ${inter.variable}`}>
       <body className="antialiased bg-[#fdf7fa]">
         <Navigation />
-        {children}
+        <TransitionLayout>
+          {children}
+        </TransitionLayout>
         <Footer />
+        <ChatAssistant />
       </body>
     </html>
   );
