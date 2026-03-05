@@ -6,6 +6,7 @@ import works from "./routes/works";
 import images from "./routes/images";
 import instagram from "./routes/instagram";
 import news from "./routes/news";
+import shop from "./routes/shop";
 
 const app = new Hono();
 
@@ -23,6 +24,7 @@ app.route("/api/works", works);
 app.route("/api/images", images);
 app.route("/api/instagram", instagram);
 app.route("/api/news", news);
+app.route("/api/shop", shop);
 
 app.get("/health", (c) => c.json({ status: "ok" }));
 

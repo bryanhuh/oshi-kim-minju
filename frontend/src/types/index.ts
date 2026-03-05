@@ -37,6 +37,18 @@ export interface NewsItem {
   publishedAt: string | null;
 }
 
+export interface ShopItem {
+  id: number;
+  title: string;
+  description: string | null;
+  price: string | null;
+  imageUrl: string | null;
+  shopUrl: string | null;
+  category: string | null;
+  source: string | null;
+  createdAt: string | null;
+}
+
 export interface Profile {
   id: number;
   name: string | null;

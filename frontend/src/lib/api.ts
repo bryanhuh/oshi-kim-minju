@@ -31,6 +31,14 @@ export async function fetchInstagram(limit = 30, offset = 0) {
   return res.json();
 }
 
+export async function fetchShop(limit = 50, offset = 0) {
+  const res = await fetch(`${API_BASE}/api/shop?limit=${limit}&offset=${offset}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
+
 export async function fetchNews(limit = 20, offset = 0) {
   const res = await fetch(`${API_BASE}/api/news?limit=${limit}&offset=${offset}`, {
     next: { revalidate: 1800 },

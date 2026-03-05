@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, timestamp, varchar, numeric } from "drizzle-orm/pg-core";
 
 export const minujProfile = pgTable("minju_profile", {
   id: serial("id").primaryKey(),
@@ -40,6 +40,18 @@ export const instagramPosts = pgTable("instagram_posts", {
   caption: text("caption"),
   likes: integer("likes"),
   postedAt: timestamp("posted_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const shopItems = pgTable("shop_items", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  price: varchar("price", { length: 100 }),
+  imageUrl: text("image_url"),
+  shopUrl: text("shop_url").unique(),
+  category: varchar("category", { length: 100 }),
+  source: varchar("source", { length: 100 }),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
