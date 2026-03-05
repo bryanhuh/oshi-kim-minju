@@ -12,8 +12,8 @@ const mockImages: GalleryImage[] = [
   // Photoshoots
   {
     id: 1,
-    url: "https://i.pinimg.com/originals/28/78/f5/2878f5e2d8f1d4a4e7e7c5e6b3f1a2d9.jpg",
-    thumbnailUrl: "https://i.pinimg.com/736x/28/78/f5/2878f5e2d8f1d4a4e7e7c5e6b3f1a2d9.jpg",
+    url: "https://picsum.photos/seed/minju-cosmo/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-cosmo/400/600",
     category: "photoshoot",
     source: "Cosmopolitan Korea",
     altText: "Kim Minju Cosmopolitan photoshoot",
@@ -21,8 +21,8 @@ const mockImages: GalleryImage[] = [
   },
   {
     id: 2,
-    url: "https://i.pinimg.com/originals/c1/e2/3f/c1e23f4d5a6b7c8d9e0f1a2b3c4d5e6f.jpg",
-    thumbnailUrl: "https://i.pinimg.com/736x/c1/e2/3f/c1e23f4d5a6b7c8d9e0f1a2b3c4d5e6f.jpg",
+    url: "https://picsum.photos/seed/minju-marie/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-marie/400/600",
     category: "photoshoot",
     source: "Marie Claire Korea",
     altText: "Kim Minju Marie Claire photoshoot",
@@ -31,8 +31,8 @@ const mockImages: GalleryImage[] = [
   // Drama stills — Ask the Stars
   {
     id: 3,
-    url: "https://file.mk.co.kr/meet/neds/2023/11/image_readtop_2023_893876_16993804235042714.jpg",
-    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2023/11/image_readtop_2023_893876_16993804235042714.jpg",
+    url: "https://picsum.photos/seed/minju-stars/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-stars/400/600",
     category: "drama_still",
     source: "Ask the Stars (ENA)",
     altText: "Kim Minju in Ask the Stars",
@@ -40,8 +40,8 @@ const mockImages: GalleryImage[] = [
   },
   {
     id: 4,
-    url: "https://img.hankyung.com/photo/202311/AA.35133282.1.jpg",
-    thumbnailUrl: "https://img.hankyung.com/photo/202311/AA.35133282.1.jpg",
+    url: "https://picsum.photos/seed/minju-stars2/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-stars2/400/600",
     category: "drama_still",
     source: "Ask the Stars (ENA)",
     altText: "Kim Minju in Ask the Stars space scene",
@@ -50,8 +50,8 @@ const mockImages: GalleryImage[] = [
   // Drama stills — Trolley
   {
     id: 5,
-    url: "https://file.mk.co.kr/meet/neds/2023/01/image_readtop_2023_51624_16730474864823174.jpg",
-    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2023/01/image_readtop_2023_51624_16730474864823174.jpg",
+    url: "https://picsum.photos/seed/minju-trolley/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-trolley/400/600",
     category: "drama_still",
     source: "Trolley (MBC)",
     altText: "Kim Minju in Trolley MBC drama",
@@ -60,8 +60,8 @@ const mockImages: GalleryImage[] = [
   // Events
   {
     id: 6,
-    url: "https://dispatch.cdnser.be/cms-content/uploads/2023/11/06/5fa3c8bc-6d8b-4c6e-9b0e-9f7e1e3e2c1a.jpg",
-    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2023/11/06/5fa3c8bc-6d8b-4c6e-9b0e-9f7e1e3e2c1a.jpg",
+    url: "https://picsum.photos/seed/minju-event1/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-event1/400/600",
     category: "event",
     source: "Dispatch",
     altText: "Kim Minju fan event",
@@ -69,8 +69,8 @@ const mockImages: GalleryImage[] = [
   },
   {
     id: 7,
-    url: "https://dispatch.cdnser.be/cms-content/uploads/2024/03/15/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg",
-    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2024/03/15/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg",
+    url: "https://picsum.photos/seed/minju-award/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-award/400/600",
     category: "event",
     source: "Dispatch",
     altText: "Kim Minju award ceremony",
@@ -79,8 +79,8 @@ const mockImages: GalleryImage[] = [
   // Magazine
   {
     id: 8,
-    url: "https://file.mk.co.kr/meet/neds/2024/01/image_readtop_2024_48231_17058021264502418.jpg",
-    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2024/01/image_readtop_2024_48231_17058021264502418.jpg",
+    url: "https://picsum.photos/seed/minju-vogue/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-vogue/400/600",
     category: "magazine",
     source: "Vogue Korea",
     altText: "Kim Minju Vogue Korea magazine cover",
@@ -88,8 +88,8 @@ const mockImages: GalleryImage[] = [
   },
   {
     id: 9,
-    url: "https://img.hankyung.com/photo/202401/AA.35899411.1.jpg",
-    thumbnailUrl: "https://img.hankyung.com/photo/202401/AA.35899411.1.jpg",
+    url: "https://picsum.photos/seed/minju-elle/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-elle/400/600",
     category: "magazine",
     source: "Elle Korea",
     altText: "Kim Minju Elle Korea feature",
@@ -98,8 +98,8 @@ const mockImages: GalleryImage[] = [
   // More photoshoots (IZ*ONE era)
   {
     id: 10,
-    url: "https://file.mk.co.kr/meet/neds/2020/09/image_readtop_2020_950437_15994734404498044.jpg",
-    thumbnailUrl: "https://file.mk.co.kr/meet/neds/2020/09/image_readtop_2020_950437_15994734404498044.jpg",
+    url: "https://picsum.photos/seed/minju-bloomiz/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-bloomiz/400/600",
     category: "photoshoot",
     source: "IZ*ONE BLOOM*IZ era",
     altText: "Kim Minju IZ*ONE BLOOM*IZ photoshoot",
@@ -107,8 +107,8 @@ const mockImages: GalleryImage[] = [
   },
   {
     id: 11,
-    url: "https://img.hankyung.com/photo/201812/AA.18551611.1.jpg",
-    thumbnailUrl: "https://img.hankyung.com/photo/201812/AA.18551611.1.jpg",
+    url: "https://picsum.photos/seed/minju-coloriz/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-coloriz/400/600",
     category: "photoshoot",
     source: "IZ*ONE debut era",
     altText: "Kim Minju IZ*ONE COLOR*IZ debut photoshoot",
@@ -117,8 +117,8 @@ const mockImages: GalleryImage[] = [
   // IZ*ONE event
   {
     id: 12,
-    url: "https://dispatch.cdnser.be/cms-content/uploads/2019/09/02/79e4c7a5-4f3a-4b6e-8d2c-1e9f2b3a4c5d.jpg",
-    thumbnailUrl: "https://dispatch.cdnser.be/cms-content/uploads/2019/09/02/79e4c7a5-4f3a-4b6e-8d2c-1e9f2b3a4c5d.jpg",
+    url: "https://picsum.photos/seed/minju-concert/800/1200",
+    thumbnailUrl: "https://picsum.photos/seed/minju-concert/400/600",
     category: "event",
     source: "Dispatch",
     altText: "Kim Minju IZ*ONE concert",
@@ -134,9 +134,9 @@ export default function GalleryClient() {
   const filtered = activeCategory === "All"
     ? mockImages
     : mockImages.filter((img) => {
-        const cat = activeCategory.toLowerCase().replace(" ", "_");
-        return img.category === cat;
-      });
+      const cat = activeCategory.toLowerCase().replace(" ", "_");
+      return img.category === cat;
+    });
 
   const openLightbox = useCallback((img: GalleryImage, index: number) => {
     setLightboxImage(img);
@@ -163,11 +163,10 @@ export default function GalleryClient() {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${
-              activeCategory === cat
+            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeCategory === cat
                 ? "bg-[#f4a7c1] text-white pink-glow"
                 : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-            }`}
+              }`}
           >
             {cat}
           </button>

@@ -13,7 +13,7 @@ const mockWorks: Work[] = [
     titleKorean: "별에게 물어봐",
     year: 2023,
     role: "Oh Bok-soon",
-    poster: "https://image.tmdb.org/t/p/w500/8S3RB0l5NJ4RZMV1anFjFcSHJjE.jpg",
+    poster: "https://image.tmdb.org/t/p/w500/pdOiUbJ0vEJfh5OGFG8y1e4InQ7.jpg",
     synopsis:
       "A romantic comedy set in space. Oh Bok-soon is a crew member aboard the first commercial space station. A surgeon boards the station and the two fall in love.",
     trailerUrl: null,
@@ -25,7 +25,7 @@ const mockWorks: Work[] = [
     titleKorean: "트롤리",
     year: 2022,
     role: "Kim Soo-bin",
-    poster: "https://image.tmdb.org/t/p/w500/qbGlLVHiDLjBLVTSJWbMtFHBkrB.jpg",
+    poster: "https://image.tmdb.org/t/p/w500/oqALkLrRRlBjZMQ5bw4QXDQy68g.jpg",
     synopsis:
       "A politician's wife with a dark secret is forced into a moral dilemma. Kim Soo-bin is a high school student whose life becomes entangled in the political scandal.",
     trailerUrl: null,
@@ -37,7 +37,7 @@ const mockWorks: Work[] = [
     titleKorean: "심야화실",
     year: 2024,
     role: "Hong Ye-seul",
-    poster: "https://image.tmdb.org/t/p/w500/7rHVXaIhLd4kCBhGxnBqjGSSM9r.jpg",
+    poster: "https://image.tmdb.org/t/p/w500/zzIv3CQVIsKHxW37OkfHW5RkG7C.jpg",
     synopsis:
       "A midnight art studio where a young woman discovers a mysterious painter who only works at night. Hong Ye-seul is an art student drawn into the world of the studio.",
     trailerUrl: null,
@@ -49,7 +49,7 @@ const mockWorks: Work[] = [
     titleKorean: "으라차차 와이키키 2",
     year: 2019,
     role: "Han Yoon-ah",
-    poster: "https://image.tmdb.org/t/p/w500/m53SYwOSBCQHFv8D3xlwm0xYQce.jpg",
+    poster: "https://image.tmdb.org/t/p/w500/koDAMr1EmReCFFJuiUIyBVx3Ypa.jpg",
     synopsis:
       "The second season of the comedy series about three dreamers running a guesthouse in Itaewon, Seoul. Minju plays Han Yoon-ah, a cheerful young woman connected to the guesthouse crew.",
     trailerUrl: null,
@@ -61,7 +61,7 @@ const mockWorks: Work[] = [
     titleKorean: "프로듀스 48",
     year: 2018,
     role: "Contestant (Finalist)",
-    poster: "https://image.tmdb.org/t/p/w500/6C2HYhGMSMkWgRiDJ8LGwcVwX1Q.jpg",
+    poster: "https://image.tmdb.org/t/p/w500/hJ7LBa817QEr7TBi5eA7t6QcsdQ.jpg",
     synopsis:
       "A collaboration survival show between Mnet and AKB48. 96 Korean and Japanese trainees compete for 12 spots in a new K-pop group IZ*ONE. Minju finished in 12th place.",
     trailerUrl: null,

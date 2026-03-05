@@ -11,7 +11,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 1,
     postId: "C1abc123",
-    imageUrl: "https://file.mk.co.kr/meet/neds/2024/01/image_readtop_2024_48231_17058021264502418.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig1/600/600",
     caption: "새해 복 많이 받으세요 🌸 Happy New Year everyone, thank you for always being by my side 🤍",
     likes: 487234,
     postedAt: "2024-01-01T00:00:00Z",
@@ -19,7 +19,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 2,
     postId: "C2def456",
-    imageUrl: "https://img.hankyung.com/photo/202401/AA.35899411.1.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig2/600/600",
     caption: "촬영 현장에서 💕 Behind the scenes today",
     likes: 412087,
     postedAt: "2024-01-15T10:00:00Z",
@@ -27,7 +27,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 3,
     postId: "C3ghi789",
-    imageUrl: "https://file.mk.co.kr/meet/neds/2023/11/image_readtop_2023_893876_16993804235042714.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig3/600/600",
     caption: "별에게 물어봐 마지막 방송 💙 Thank you for watching Ask the Stars with us. This drama will stay in my heart forever.",
     likes: 623540,
     postedAt: "2023-12-01T18:00:00Z",
@@ -35,7 +35,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 4,
     postId: "C4jkl012",
-    imageUrl: "https://img.hankyung.com/photo/202311/AA.35133282.1.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig4/600/600",
     caption: "오늘도 행복한 하루 ☁️ 여러분 감사해요",
     likes: 389102,
     postedAt: "2023-11-10T09:00:00Z",
@@ -43,7 +43,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 5,
     postId: "C5mno345",
-    imageUrl: "https://file.mk.co.kr/meet/neds/2023/01/image_readtop_2023_51624_16730474864823174.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig5/600/600",
     caption: "트롤리 잘 봐주셔서 감사합니다 💖 I'm so grateful for all your support for Trolley.",
     likes: 511876,
     postedAt: "2023-02-08T20:00:00Z",
@@ -51,7 +51,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 6,
     postId: "C6pqr678",
-    imageUrl: "https://file.mk.co.kr/meet/neds/2020/09/image_readtop_2020_950437_15994734404498044.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig6/600/600",
     caption: "BLOOM*IZ 💐 꽃처럼 피어날게요",
     likes: 728904,
     postedAt: "2020-10-27T12:00:00Z",
@@ -59,7 +59,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 7,
     postId: "C7stu901",
-    imageUrl: "https://img.hankyung.com/photo/201812/AA.18551611.1.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig7/600/600",
     caption: "아이즈원 데뷔 🌟 COLOR*IZ 많이 사랑해주세요!",
     likes: 912345,
     postedAt: "2018-10-29T00:00:00Z",
@@ -67,7 +67,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 8,
     postId: "C8vwx234",
-    imageUrl: "https://dispatch.cdnser.be/cms-content/uploads/2023/11/06/5fa3c8bc-6d8b-4c6e-9b0e-9f7e1e3e2c1a.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig8/600/600",
     caption: "팬미팅 너무 행복했어요 💗 I love you all so much, thank you for coming today!",
     likes: 456789,
     postedAt: "2023-11-06T19:00:00Z",
@@ -75,7 +75,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 9,
     postId: "C9yza567",
-    imageUrl: "https://dispatch.cdnser.be/cms-content/uploads/2019/09/02/79e4c7a5-4f3a-4b6e-8d2c-1e9f2b3a4c5d.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig9/600/600",
     caption: "HEART*IZ 💜 La vie en rose 🌹",
     likes: 834521,
     postedAt: "2019-04-01T00:00:00Z",
@@ -83,7 +83,7 @@ const mockPosts: InstagramPost[] = [
   {
     id: 10,
     postId: "C10bcd890",
-    imageUrl: "https://dispatch.cdnser.be/cms-content/uploads/2024/03/15/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg",
+    imageUrl: "https://picsum.photos/seed/minju-ig10/600/600",
     caption: "Spring is here 🌸 봄이 왔어요 오늘 날씨 너무 좋다",
     likes: 378654,
     postedAt: "2024-03-15T11:00:00Z",
