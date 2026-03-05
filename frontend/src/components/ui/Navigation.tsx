@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import SoundToggle from "./SoundToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -13,6 +14,7 @@ const navLinks = [
   { href: "/instagram", label: "Instagram" },
   { href: "/news", label: "News" },
   { href: "/izone", label: "IZ*ONE" },
+  { href: "/world", label: "Her World" },
 ];
 
 export default function Navigation() {
@@ -42,6 +44,7 @@ export default function Navigation() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
+          <SoundToggle />
           {navLinks.map((link) => (
             <Link
               key={link.href}
