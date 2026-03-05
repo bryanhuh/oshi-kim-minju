@@ -1,5 +1,6 @@
 import { scrapeNews } from "./news";
 import { scrapeHancinemaNews } from "./hancinema-news";
+import { scrapeHancinemaImages } from "./hancinema-images";
 import { scrapeWorks } from "./mydramalist";
 import { processHancinemaWorks } from "./hancinema";
 
@@ -27,7 +28,13 @@ async function runAll() {
   try {
     await processHancinemaWorks();
   } catch (err) {
-    console.error("[cron] Hancinema scrape failed:", err);
+    console.error("[cron] Hancinema works scrape failed:", err);
+  }
+
+  try {
+    await scrapeHancinemaImages();
+  } catch (err) {
+    console.error("[cron] Hancinema images scrape failed:", err);
   }
 
   console.log("[cron] Done.");
