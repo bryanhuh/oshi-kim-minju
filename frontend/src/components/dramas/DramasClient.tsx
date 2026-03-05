@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { getProxyImageUrl, needsProxy } from "@/lib/api";
 import type { Work } from "@/types";
 
 const TYPES = ["All", "Drama", "Movie", "Variety", "Videos"];
@@ -16,9 +17,9 @@ export default function DramasClient({ works }: { works: Work[] }) {
     activeType === "All"
       ? works
       : works.filter((w) => {
-          const typeKey = activeType === "Videos" ? "video" : activeType.toLowerCase();
-          return w.type?.toLowerCase() === typeKey;
-        });
+        const typeKey = activeType === "Videos" ? "video" : activeType.toLowerCase();
+        return w.type?.toLowerCase() === typeKey;
+      });
 
   return (
     <div className="px-6 max-w-7xl mx-auto">
@@ -34,11 +35,10 @@ export default function DramasClient({ works }: { works: Work[] }) {
           <button
             key={type}
             onClick={() => setActiveType(type)}
-            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${
-              activeType === type
-                ? "bg-[#f4a7c1] text-white pink-glow"
-                : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeType === type
+              ? "bg-[#f4a7c1] text-white pink-glow"
+              : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
+              }`}
           >
             {type}
           </button>
@@ -67,9 +67,10 @@ export default function DramasClient({ works }: { works: Work[] }) {
               <div className="relative overflow-hidden rounded-2xl aspect-[2/3] glass border border-[#f7c6d9]/30 hover:border-[#f4a7c1]/50 transition-all duration-500">
                 {work.poster ? (
                   <Image
-                    src={work.poster}
+                    src={getProxyImageUrl(work.poster) as string}
                     alt={work.title ?? ""}
                     fill
+                    unoptimized={needsProxy(work.poster)}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (

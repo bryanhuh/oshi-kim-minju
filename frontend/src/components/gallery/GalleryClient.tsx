@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { getProxyImageUrl, needsProxy } from "@/lib/api";
 import type { GalleryImage, InstagramPost } from "@/types";
 
 const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
@@ -268,18 +269,16 @@ export default function GalleryClient() {
         <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-4xl md:text-5xl font-light text-[#2a1a20] mb-4 tracking-wide">
           <button
             onClick={() => setSection("gallery")}
-            className={`transition-colors duration-300 ${
-              section === "gallery" ? "text-[#2a1a20]" : "text-[#2a1a20]/30 hover:text-[#e8809e]"
-            }`}
+            className={`transition-colors duration-300 ${section === "gallery" ? "text-[#2a1a20]" : "text-[#2a1a20]/30 hover:text-[#e8809e]"
+              }`}
           >
             Gallery
           </button>
           <span className="mx-3 text-[#f4a7c1]/60 font-light">•</span>
           <button
             onClick={() => setSection("instagram")}
-            className={`transition-colors duration-300 ${
-              section === "instagram" ? "text-[#2a1a20]" : "text-[#2a1a20]/30 hover:text-[#e8809e]"
-            }`}
+            className={`transition-colors duration-300 ${section === "instagram" ? "text-[#2a1a20]" : "text-[#2a1a20]/30 hover:text-[#e8809e]"
+              }`}
           >
             Instagram
           </button>
@@ -310,21 +309,19 @@ export default function GalleryClient() {
               <div className="glass rounded-full p-1 flex gap-1">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${
-                    viewMode === "grid"
-                      ? "bg-[#f4a7c1] text-white"
-                      : "text-[#2a1a20]/50 hover:text-[#e8809e]"
-                  }`}
+                  className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${viewMode === "grid"
+                    ? "bg-[#f4a7c1] text-white"
+                    : "text-[#2a1a20]/50 hover:text-[#e8809e]"
+                    }`}
                 >
                   Grid
                 </button>
                 <button
                   onClick={() => setViewMode("3d")}
-                  className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${
-                    viewMode === "3d"
-                      ? "bg-[#f4a7c1] text-white"
-                      : "text-[#2a1a20]/50 hover:text-[#e8809e]"
-                  }`}
+                  className={`px-5 py-2 rounded-full text-xs tracking-widest transition-all duration-300 ${viewMode === "3d"
+                    ? "bg-[#f4a7c1] text-white"
+                    : "text-[#2a1a20]/50 hover:text-[#e8809e]"
+                    }`}
                 >
                   3D Museum
                 </button>
@@ -343,11 +340,10 @@ export default function GalleryClient() {
                       <button
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
-                        className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${
-                          activeCategory === cat
-                            ? "bg-[#f4a7c1] text-white pink-glow"
-                            : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-                        }`}
+                        className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeCategory === cat
+                          ? "bg-[#f4a7c1] text-white pink-glow"
+                          : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
+                          }`}
                       >
                         {cat}
                       </button>
@@ -401,10 +397,11 @@ export default function GalleryClient() {
                       >
                         <div className="relative overflow-hidden rounded-xl">
                           <Image
-                            src={img.thumbnailUrl ?? img.url}
+                            src={getProxyImageUrl(img.thumbnailUrl) || getProxyImageUrl(img.url) || ""}
                             alt={img.altText ?? "Kim Minju"}
                             width={400}
                             height={i % 3 === 0 ? 600 : 400}
+                            unoptimized={needsProxy(img.thumbnailUrl) || needsProxy(img.url)}
                             className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display = "none";
@@ -521,10 +518,11 @@ export default function GalleryClient() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={lightboxImage.url}
+                src={getProxyImageUrl(lightboxImage.url) as string}
                 alt={lightboxImage.altText ?? "Kim Minju"}
                 width={800}
                 height={1000}
+                unoptimized={needsProxy(lightboxImage.url)}
                 className="object-contain max-h-[80vh] rounded-xl"
               />
 

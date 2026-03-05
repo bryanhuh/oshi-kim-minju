@@ -46,3 +46,16 @@ export async function fetchNews(limit = 20, offset = 0) {
   if (!res.ok) return [];
   return res.json();
 }
+
+export function getProxyImageUrl(url: string | null | undefined): string | null | undefined {
+  if (!url) return url;
+  if (url.includes("hancinema.net")) {
+    return `/api/proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
+
+/** Returns true if the URL will be served through the local proxy (requires unoptimized on next/image) */
+export function needsProxy(url: string | null | undefined): boolean {
+  return Boolean(url?.includes("hancinema.net"));
+}

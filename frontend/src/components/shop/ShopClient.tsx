@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { getProxyImageUrl, needsProxy } from "@/lib/api";
 import type { ShopItem } from "@/types";
 
 // Fallback items when no data is available
@@ -102,11 +103,10 @@ export default function ShopClient({ items }: { items: ShopItem[] }) {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-[#f4a7c1] text-white pink-glow"
-                  : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-              }`}
+              className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeCategory === cat
+                ? "bg-[#f4a7c1] text-white pink-glow"
+                : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
+                }`}
             >
               {cat}
             </button>
@@ -146,9 +146,10 @@ export default function ShopClient({ items }: { items: ShopItem[] }) {
                   <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-[#fde8f0] to-[#fdf7fa]">
                     {item.imageUrl ? (
                       <Image
-                        src={item.imageUrl}
+                        src={getProxyImageUrl(item.imageUrl) as string}
                         alt={item.title}
                         fill
+                        unoptimized={needsProxy(item.imageUrl)}
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = "none";
