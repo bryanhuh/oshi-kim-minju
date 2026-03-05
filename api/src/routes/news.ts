@@ -3,6 +3,7 @@ import { db } from "../db";
 import { news } from "../db/schema";
 import { desc, count } from "drizzle-orm";
 import { scrapeNews } from "../scrapers/news";
+import { scrapeHancinemaNews } from "../scrapers/hancinema-news";
 
 const newsRoute = new Hono();
 
@@ -16,8 +17,13 @@ newsRoute.get("/", async (c) => {
       .from(news);
 
     if (Number(rowCount) === 0) {
-      console.log("[news] DB empty, scraping Google News RSS...");
-      await scrapeNews();
+      console.log("[news] DB empty, scraping HanCinema + Google News RSS...");
+      await scrapeHancinemaNews().catch((e) =>
+        console.error("[news] HanCinema news scrape failed:", e)
+      );
+      await scrapeNews().catch((e) =>
+        console.error("[news] Google RSS scrape failed:", e)
+      );
     }
   } catch (err) {
     console.error("[news] Auto-scrape failed:", err);
