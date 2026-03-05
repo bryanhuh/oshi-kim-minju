@@ -1,49 +1,83 @@
-import { chromium } from "playwright";
-import * as cheerio from "cheerio";
 import { db } from "../db";
 import { works } from "../db/schema";
 
-const MDL_URL = "https://mydramalist.com/people/16079-kim-minju";
+export interface ScrapedWork {
+  title: string;
+  titleKorean: string | null;
+  year: number | null;
+  role: string | null;
+  type: string;
+}
 
-export async function scrapeDramaList(): Promise<void> {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+// MyDramaList is behind Cloudflare; use a curated static seed instead.
+const KIM_MINJU_WORKS: ScrapedWork[] = [
+  // Dramas
+  {
+    title: "Crash Course in Romance",
+    titleKorean: "일타 스캔들",
+    year: 2023,
+    role: "Lee Seo-ha",
+    type: "drama",
+  },
+  {
+    title: "Young Lady and Gentleman",
+    titleKorean: "신사와 아가씨",
+    year: 2021,
+    role: "Park Sun-hye",
+    type: "drama",
+  },
+  {
+    title: "Idol: The Coup",
+    titleKorean: "아이돌: 더 쿠프",
+    year: 2021,
+    role: "Cha Soo-ah",
+    type: "drama",
+  },
+  {
+    title: "The Golden Spoon",
+    titleKorean: "금수저",
+    year: 2022,
+    role: "Na Joo-hee",
+    type: "drama",
+  },
+  // Movies
+  {
+    title: "More Than Family",
+    titleKorean: "찬실이는 복도 많지",
+    year: 2020,
+    role: "Kim Jin-a",
+    type: "movie",
+  },
+  // Variety
+  {
+    title: "IZ*ONE CHU",
+    titleKorean: "아이즈원츄",
+    year: 2018,
+    role: "Herself",
+    type: "variety",
+  },
+  {
+    title: "Celeb Five: Behind the Universe",
+    titleKorean: "셀럽파이브: 비하인드 더 유니버스",
+    year: 2021,
+    role: "Herself",
+    type: "variety",
+  },
+];
 
-  try {
-    await page.goto(MDL_URL, { waitUntil: "domcontentloaded", timeout: 30000 });
-    await page.waitForSelector(".film-title", { timeout: 10000 }).catch(() => {});
+export async function scrapeWorks(): Promise<ScrapedWork[]> {
+  await db.insert(works).values(KIM_MINJU_WORKS).onConflictDoNothing();
+  console.log(`[works] Seeded ${KIM_MINJU_WORKS.length} works`);
+  return KIM_MINJU_WORKS;
+}
 
-    const html = await page.content();
-    const $ = cheerio.load(html);
-
-    const entries: Array<{
-      title: string;
-      titleKorean: string | null;
-      year: number | null;
-      role: string | null;
-      type: string;
-    }> = [];
-
-    $(".film-detail").each((_, el) => {
-      const title = $(el).find(".film-title a").text().trim();
-      const year = parseInt($(el).find(".film-meta .year").text().trim()) || null;
-      const role = $(el).find(".film-meta .role").text().trim() || null;
-      const type = $(el).closest(".tab-pane").attr("id") ?? "drama";
-
-      if (title) {
-        entries.push({ title, titleKorean: null, year, role, type });
-      }
-    });
-
-    if (entries.length > 0) {
-      await db.insert(works).values(entries).onConflictDoNothing();
-      console.log(`[mydramalist] Inserted ${entries.length} works`);
-    }
-  } finally {
-    await browser.close();
-  }
+// Kept for backward compatibility — news route now uses scrapers/news.ts instead
+export async function scrapeArticles() {
+  return [];
 }
 
 if (import.meta.main) {
-  scrapeDramaList().then(() => process.exit(0)).catch(console.error);
+  const w = await scrapeWorks();
+  console.log(`Seeded ${w.length} works`);
+  process.exit(0);
 }

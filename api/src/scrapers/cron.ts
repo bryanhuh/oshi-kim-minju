@@ -1,5 +1,5 @@
 import { scrapeNews } from "./news";
-import { scrapeDramaList } from "./mydramalist";
+import { scrapeWorks } from "./mydramalist";
 
 async function runAll() {
   console.log("[cron] Starting daily scrape...");
@@ -11,9 +11,9 @@ async function runAll() {
   }
 
   try {
-    await scrapeDramaList();
+    await scrapeWorks();
   } catch (err) {
-    console.error("[cron] DramaList scrape failed:", err);
+    console.error("[cron] Works seed failed:", err);
   }
 
   console.log("[cron] Done.");
