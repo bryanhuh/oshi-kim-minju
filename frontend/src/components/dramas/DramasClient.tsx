@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import type { Work } from "@/types";
 
@@ -116,14 +115,14 @@ export default function DramasClient() {
       />
 
       {/* Filter tabs */}
-      <div className="flex justify-center gap-3 mb-12">
+      <div className="flex justify-center gap-3 mb-16">
         {TYPES.map((type) => (
           <button
             key={type}
             onClick={() => setActiveType(type)}
-            className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeType === type
-              ? "bg-[#f4a7c1] text-white pink-glow"
-              : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
+            className={`px-6 py-2.5 rounded-full text-xs tracking-[0.2em] uppercase transition-all duration-500 ${activeType === type
+              ? "bg-[#f4a7c1] text-white shadow-lg shadow-[#f4a7c1]/20 scale-105"
+              : "glass text-[#2a1a20]/40 hover:text-[#e8809e] hover:bg-white/40"
               }`}
           >
             {type}
@@ -133,46 +132,71 @@ export default function DramasClient() {
 
       {/* Grid */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <div className="w-8 h-8 border-2 border-[#f4a7c1] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[#2a1a20]/40 text-xs tracking-[0.2em] animate-pulse">LOADING WORKS</p>
+        <div className="flex flex-col items-center justify-center py-32 gap-6">
+          <div className="relative w-12 h-12">
+            <div className="absolute inset-0 border-2 border-[#f4a7c1]/20 rounded-full" />
+            <div className="absolute inset-0 border-2 border-[#f4a7c1] border-t-transparent rounded-full animate-spin" />
+          </div>
+          <p className="text-[#2a1a20]/30 text-[10px] uppercase tracking-[0.4em] animate-pulse">Refining Narrative</p>
         </div>
       ) : error ? (
-        <p className="text-center text-[#e8809e] py-20 text-sm tracking-widest">
-          {error}
-        </p>
+        <div className="glass rounded-3xl p-12 text-center max-w-lg mx-auto">
+          <p className="text-[#e8809e] text-sm tracking-widest">{error}</p>
+        </div>
       ) : filtered.length === 0 ? (
-        <p className="text-center text-[#2a1a20]/40 py-20 text-sm tracking-widest">
-          No works found.
+        <p className="text-center text-[#2a1a20]/30 py-32 text-xs tracking-[0.3em] uppercase">
+          No records found in this category.
         </p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
             {filtered.map((work, i) => (
               <motion.div
                 key={work.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, delay: i * 0.03 }}
+                transition={{ duration: 0.6, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
                 onClick={() => setSelectedWork(work)}
-                className="cursor-pointer group"
+                className="cursor-pointer group flex h-full"
               >
-                <div className="relative overflow-hidden rounded-2xl aspect-[2/3] glass border border-[#f7c6d9]/30 hover:border-[#f4a7c1]/50 transition-all duration-500 shadow-sm group-hover:shadow-md">
-                  <Image
-                    src={`https://picsum.photos/seed/drama-${work.id}/400/600`}
-                    alt={work.title ?? ""}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/80 via-[#2a1a20]/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <p className="text-[#f7c6d9] text-[10px] uppercase tracking-[0.2em] mb-1.5 font-medium">
-                      {work.year || "TBA"} • {work.type}
-                    </p>
-                    <h3 className="text-white font-[family-name:var(--font-noto-serif-kr)] text-xl leading-tight mb-2">{work.title}</h3>
-                    <p className="text-white/60 text-xs line-clamp-2 leading-relaxed">{work.role}</p>
+                <div className="glass-premium relative w-full p-8 rounded-[2rem] border border-[#f7c6d9]/20 group-hover:border-[#f4a7c1]/40 transition-all duration-700 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[#f4a7c1]/5">
+                  {/* Decorative background element */}
+                  <div className="absolute -top-12 -right-12 w-40 h-40 bg-gradient-to-br from-[#f4a7c1]/5 to-transparent rounded-full blur-2xl group-hover:scale-150 transition-transform duration-1000" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="w-8 h-px bg-[#f4a7c1]/30" />
+                      <p className="text-[#f4a7c1] text-[10px] font-semibold tracking-[0.3em] uppercase">
+                        {work.year || "TBA"}
+                      </p>
+                    </div>
+
+                    <h3 className="text-[#2a1a20] font-[family-name:var(--font-noto-serif-kr)] text-2xl mb-4 leading-tight group-hover:text-[#e8809e] transition-colors duration-500">
+                      {work.title}
+                    </h3>
+                  </div>
+
+                  <div className="relative z-10 pt-8 border-t border-[#2a1a20]/5 mt-auto">
+                    <div className="flex flex-col gap-0.5">
+                      <p className="text-[#2a1a20]/30 text-[9px] uppercase tracking-[0.2em] font-medium">Character / Role</p>
+                      <p className="text-[#2a1a20]/60 text-xs tracking-wide leading-relaxed truncate group-hover:text-[#2a1a20]/80">
+                        {work.role}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-6 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                      <span className="text-[10px] text-[#f4a7c1] font-medium tracking-widest uppercase">View Details</span>
+                      <svg className="w-4 h-4 text-[#f4a7c1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Category Badge (Floating) */}
+                  <div className="absolute top-8 right-8 text-[9px] tracking-[0.2em] text-[#2a1a20]/20 uppercase font-bold transform rotate-90 origin-right transition-colors duration-500 group-hover:text-[#f4a7c1]/40">
+                    {work.type}
                   </div>
                 </div>
               </motion.div>
@@ -188,46 +212,74 @@ export default function DramasClient() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#2a1a20]/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#2a1a20]/40 backdrop-blur-xl"
             onClick={() => setSelectedWork(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="glass max-w-md w-full rounded-3xl p-10 relative overflow-hidden"
+              initial={{ scale: 0.9, y: 40, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 40, opacity: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="glass max-w-lg w-full rounded-[2.5rem] p-12 relative overflow-hidden shadow-2xl shadow-black/10 border border-white/40"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Accents */}
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#f4a7c1]/40 to-transparent" />
+
               <div className="relative z-10">
-                <p className="font-medium text-[#f4a7c1] text-[10px] uppercase tracking-[0.3em] mb-3">
-                  {selectedWork.year || "TBA"} · {selectedWork.type}
-                </p>
-                <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-3xl text-[#2a1a20] mb-2 leading-tight">
+                <div className="flex items-center gap-4 mb-8">
+                  <p className="font-bold text-[#f4a7c1] text-[11px] uppercase tracking-[0.4em]">
+                    {selectedWork.year || "TBA"} Narrative
+                  </p>
+                  <span className="h-1 w-1 rounded-full bg-[#f4a7c1]/30" />
+                  <p className="text-[#2a1a20]/30 text-[11px] uppercase tracking-[0.4em]">
+                    {selectedWork.type}
+                  </p>
+                </div>
+
+                <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-4xl text-[#2a1a20] mb-3 leading-tight tracking-tight">
                   {selectedWork.title}
                 </h2>
-                <div className="w-10 h-0.5 bg-[#f4a7c1]/30 mb-6" />
 
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-[#2a1a20]/40 text-[10px] uppercase tracking-widest mb-1.5">Role Details</p>
-                    <p className="text-[#2a1a20]/70 text-sm leading-relaxed">
+                <div className="w-16 h-0.5 bg-gradient-to-r from-[#f4a7c1] to-transparent mb-10 rounded-full" />
+
+                <div className="space-y-8">
+                  <div className="bg-[#2a1a20]/5 rounded-2xl p-6 border border-white/20">
+                    <p className="text-[#2a1a20]/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Professional Credit</p>
+                    <p className="text-[#2a1a20]/80 text-base leading-relaxed font-medium">
                       {selectedWork.role}
                     </p>
                   </div>
+
+                  {selectedWork.synopsis && (
+                    <div className="px-2">
+                      <p className="text-[#2a1a20]/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Overview</p>
+                      <p className="text-[#2a1a20]/70 text-sm leading-relaxed italic">
+                        {selectedWork.synopsis}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <button
                   onClick={() => setSelectedWork(null)}
-                  className="mt-10 w-full py-4 rounded-xl border border-[#f4a7c1]/20 text-[#e8809e] text-xs tracking-[0.2em] hover:bg-[#f4a7c1] hover:text-white transition-all duration-300 uppercase font-medium"
+                  className="mt-12 w-full py-5 rounded-2xl bg-[#2a1a20] text-white text-[11px] tracking-[0.3em] hover:bg-[#f4a7c1] transition-all duration-500 uppercase font-bold shadow-lg shadow-black/10"
                 >
-                  Close Narrative
+                  Close Archive
                 </button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .glass-premium {
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+        }
+      `}</style>
     </div>
   );
 }
