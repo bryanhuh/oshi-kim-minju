@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { db } from "../db";
 import { shopItems } from "../db/schema";
+import { mirrorToCloudinary } from "../lib/cloudinary";
 
 const BASE_URL = "https://www.hancinema.net";
 const SHOP_URL = `${BASE_URL}/korean_Kim_Minju-shopping.html`;
@@ -89,6 +90,18 @@ export async function scrapeHancinemaShop(): Promise<void> {
   if (scraped.length === 0) {
     console.log("[hancinema-shop] No shop items found (page may be blocked or empty).");
     return;
+  }
+
+  // Upload shop images to Cloudinary
+  console.log(`[hancinema-shop] Uploading ${scraped.length} images to Cloudinary...`);
+  for (let i = 0; i < scraped.length; i++) {
+    const item = scraped[i];
+    if (item.imageUrl) {
+      const publicId = `shop-${item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50)}`;
+      const cloudUrl = await mirrorToCloudinary(item.imageUrl, publicId, "minju/shop");
+      if (cloudUrl) item.imageUrl = cloudUrl;
+    }
+    if (i > 0 && i % 5 === 0) await new Promise((r) => setTimeout(r, 500));
   }
 
   await db

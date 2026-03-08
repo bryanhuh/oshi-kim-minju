@@ -1,47 +1,12 @@
 import * as cheerio from "cheerio";
 import { db } from "../db";
 import { works } from "../db/schema";
-import { inArray } from "drizzle-orm";
-import { join, basename } from "path";
-import { mkdir } from "fs/promises";
+import { mirrorToCloudinary } from "../lib/cloudinary";
 
-const POSTERS_DIR = join(import.meta.dirname, "../../../frontend/public/posters");
-
-async function downloadPoster(url: string): Promise<string> {
-    try {
-        await mkdir(POSTERS_DIR, { recursive: true });
-        const filename = basename(new URL(url).pathname);
-        const filePath = join(POSTERS_DIR, filename);
-        const localPath = `/posters/${filename}`;
-
-        // Skip download if already exists
-        const existing = Bun.file(filePath);
-        if (await existing.exists()) return localPath;
-
-        const res = await fetch(url, {
-            headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                "Accept": "image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Referer": "https://www.hancinema.net/",
-                "Sec-Fetch-Dest": "image",
-                "Sec-Fetch-Mode": "no-cors",
-                "Sec-Fetch-Site": "same-site",
-            },
-        });
-
-        if (!res.ok) {
-            console.warn(`[hancinema] Could not download poster ${filename}: HTTP ${res.status}`);
-            return url; // fall back to original URL
-        }
-
-        await Bun.write(filePath, await res.arrayBuffer());
-        console.log(`[hancinema] Downloaded poster → ${localPath}`);
-        return localPath;
-    } catch {
-        return url; // fall back to original URL on any error
-    }
+async function uploadPoster(url: string, title: string): Promise<string> {
+    const publicId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "");
+    const cloudinaryUrl = await mirrorToCloudinary(url, publicId, "minju/posters");
+    return cloudinaryUrl ?? url; // fall back to original URL on failure
 }
 
 export interface ScrapedWork {
@@ -131,8 +96,8 @@ export async function scrapeHancinema(): Promise<ScrapedWork[]> {
 
             if (titleStr && !addedTitles.has(titleStr)) {
                 addedTitles.add(titleStr);
-                // Download poster to local static dir if available
-                const localPoster = posterUrl ? await downloadPoster(posterUrl) : undefined;
+                // Upload poster to Cloudinary if available
+                const localPoster = posterUrl ? await uploadPoster(posterUrl, titleStr) : undefined;
                 scrapedWorks.push({
                     title: titleStr,
                     titleKorean: titleKorean || null,

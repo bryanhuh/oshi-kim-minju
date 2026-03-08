@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { db } from "../db";
 import { images } from "../db/schema";
+import { mirrorToCloudinary } from "../lib/cloudinary";
 
 const BASE_URL = "https://www.hancinema.net";
 const GALLERY_URL = `${BASE_URL}/korean_Kim_Minju-picture_gallery.html`;
@@ -100,8 +101,29 @@ export async function scrapeHancinemaImages(): Promise<void> {
     return;
   }
 
-  await db.insert(images).values(toInsert);
-  console.log(`[hancinema-images] Inserted ${toInsert.length} new images.`);
+  // Upload images to Cloudinary before inserting
+  console.log(`[hancinema-images] Uploading ${toInsert.length} images to Cloudinary...`);
+  const cloudinaryImages = [];
+  for (let i = 0; i < toInsert.length; i++) {
+    const img = toInsert[i];
+    const publicId = `gallery-${i}-${Date.now()}`;
+    const cloudUrl = await mirrorToCloudinary(img.url, publicId, "minju/gallery");
+    const cloudThumb = img.thumbnailUrl !== img.url
+      ? await mirrorToCloudinary(img.thumbnailUrl, `${publicId}-thumb`, "minju/gallery")
+      : cloudUrl;
+
+    cloudinaryImages.push({
+      ...img,
+      url: cloudUrl ?? img.url,
+      thumbnailUrl: cloudThumb ?? img.thumbnailUrl,
+    });
+
+    // Small delay to avoid rate limiting
+    if (i > 0 && i % 5 === 0) await new Promise((r) => setTimeout(r, 500));
+  }
+
+  await db.insert(images).values(cloudinaryImages);
+  console.log(`[hancinema-images] Inserted ${cloudinaryImages.length} new images.`);
 }
 
 if (import.meta.main) {
