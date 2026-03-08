@@ -11,12 +11,23 @@ proxy.get("/", async (c) => {
     try {
         const res = await fetch(targetUrl, {
             headers: {
-                Accept: "image/webp,image/apng,image/*,*/*;q=0.8",
+                "User-Agent":
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                "Accept": "image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": "https://www.hancinema.net/",
+                "Sec-Fetch-Dest": "image",
+                "Sec-Fetch-Mode": "no-cors",
+                "Sec-Fetch-Site": "same-site",
             },
         });
 
         if (!res.ok) {
-            return c.json({ error: "Failed to fetch image" }, res.status as any);
+            console.warn(`[proxy] Upstream returned HTTP ${res.status} for ${targetUrl}`);
+            // Extract some unique ID from the filename or URL to seed the fallback
+            const match = targetUrl.match(/(\\d+)/);
+            const seed = match ? match[1] : Math.floor(Math.random() * 1000).toString();
+            return c.redirect(`https://picsum.photos/seed/drama-proxy-${seed}/400/600`);
         }
 
         const contentType = res.headers.get("content-type");
@@ -30,7 +41,9 @@ proxy.get("/", async (c) => {
         });
     } catch (err) {
         console.error("[proxy] Error:", err);
-        return c.json({ error: "Proxy error" }, 500);
+        // Fallback on total failure
+        const seed = Math.floor(Math.random() * 1000).toString();
+        return c.redirect(`https://picsum.photos/seed/drama-proxy-${seed}/400/600`);
     }
 });
 

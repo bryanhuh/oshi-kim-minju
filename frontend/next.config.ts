@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       {
         pathname: "/api/proxy",
       },
+      {
+        pathname: "/**",
+      },
     ],
   },
 };
