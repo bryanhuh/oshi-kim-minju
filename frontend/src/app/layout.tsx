@@ -4,7 +4,6 @@ import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import TransitionLayout from "@/components/ui/TransitionLayout";
-import ChatAssistant from "@/components/ui/ChatAssistant";
 
 const notoSerifKr = Noto_Serif_KR({
   variable: "--font-noto-serif-kr",
@@ -46,7 +45,6 @@ export default function RootLayout({
           {children}
         </TransitionLayout>
         <Footer />
-        <ChatAssistant />
       </body>
     </html>
   );
