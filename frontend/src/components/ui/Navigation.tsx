@@ -10,7 +10,6 @@ const navLinks = [
   { href: "/profile", label: "Profile" },
   { href: "/dramas", label: "Dramas" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/news", label: "News" },
   { href: "/izone", label: "IZ*ONE" },
   { href: "/world", label: "Her World" },
 ];
@@ -46,8 +45,8 @@ export default function Navigation() {
               key={link.href}
               href={link.href}
               className={`text-sm tracking-wider transition-colors duration-200 relative group ${pathname === link.href || (link.href === "/gallery" && pathname === "/instagram")
-                  ? "text-[#e8809e]"
-                  : "text-[#2a1a20]/70 hover:text-[#e8809e]"
+                ? "text-[#e8809e]"
+                : "text-[#2a1a20]/70 hover:text-[#e8809e]"
                 }`}
             >
               {link.label}

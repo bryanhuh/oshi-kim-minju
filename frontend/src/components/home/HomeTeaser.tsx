@@ -34,13 +34,6 @@ const sections = [
     gradient: "from-[#f4a7c1] to-[#e8809e]",
   },
   {
-    href: "/news",
-    korean: "뉴스",
-    title: "News",
-    desc: "Latest headlines and articles featuring Kim Minju.",
-    gradient: "from-[#f7c6d9] to-[#f4a7c1]",
-  },
-  {
     href: "/izone",
     korean: "아이즈원",
     title: "IZ*ONE Era",
