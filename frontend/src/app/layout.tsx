@@ -21,6 +21,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Kim Minju — Official Fan Site",
   description: "Enter the dream world of Kim Minju — actress, model, and former IZ*ONE member.",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "Kim Minju — Official Fan Site",
     description: "Enter the dream world of Kim Minju",
