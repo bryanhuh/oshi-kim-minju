@@ -8,12 +8,6 @@ const nextConfig: NextConfig = {
     ],
     localPatterns: [
       {
-        pathname: "/api/proxy/**",
-      },
-      {
-        pathname: "/api/proxy",
-      },
-      {
         pathname: "/**",
       },
     ],
