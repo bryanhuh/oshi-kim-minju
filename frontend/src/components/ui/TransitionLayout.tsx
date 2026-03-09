@@ -70,9 +70,9 @@ export default function TransitionLayout({
       >
         {/* Pink bloom that radiates in then fades away */}
         <motion.div
-          initial={{ opacity: 0.9 }}
-          animate={{ opacity: 0 }}
-          transition={{ duration: 1.0, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.6, 0] }}
+          transition={{ duration: 0.8, ease: "easeInOut", times: [0, 0.3, 1] }}
           className="fixed inset-0 z-[198] pointer-events-none"
           style={{
             background:
