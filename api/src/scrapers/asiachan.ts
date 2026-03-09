@@ -43,31 +43,47 @@ export async function scrapeAsiaChanImages(): Promise<void> {
 
         // Extract image data
         const scraped = await page.evaluate(() => {
-            const results: Array<{ url: string, thumbnailUrl: string, altText: string }> = [];
-            const imgs = document.querySelectorAll('#content img');
+            const results: Array<{ url: string, thumbnailUrl: string, altText: string, pageUrl: string }> = [];
+            const imgs = Array.from(document.querySelectorAll('#content img')) as HTMLImageElement[];
 
-            imgs.forEach((img) => {
-                const a = img.closest('a');
-                if (!a) return;
-
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i];
                 let thumbnailUrl = img.getAttribute('src') || '';
-                let url = a.getAttribute('href') || thumbnailUrl;
-                const altText = img.getAttribute('alt') || 'Kim Minju';
 
-                // Fix protocol relative URLs
-                if (thumbnailUrl.startsWith('//')) thumbnailUrl = 'https:' + thumbnailUrl;
-                if (url.startsWith('//')) url = 'https:' + url;
-
-                // Fix relative URLs
-                if (url.startsWith('/')) url = 'https://kpop.asiachan.com' + url;
-
-                // Sometimes asiachan links to a page rather than an image
-                if (!url.match(/\.(jpg|jpeg|png|webp|gif)/i)) {
-                    url = thumbnailUrl;
+                // Skip UI icons like small.png, medium.png, download.png when they are the primary element
+                if (thumbnailUrl.includes('small.png') || thumbnailUrl.includes('medium.png') || thumbnailUrl.includes('download.png') || thumbnailUrl.includes('logo')) {
+                    continue;
                 }
 
-                results.push({ url, thumbnailUrl, altText });
-            });
+                const a = img.closest('a');
+                if (!a) continue;
+
+                let pageUrl = a.getAttribute('href') || thumbnailUrl;
+                const altText = img.getAttribute('alt') || 'Kim Minju';
+
+                // Look ahead for the download.png which contains the high-res link
+                let highResUrl = pageUrl;
+                let nextImg = imgs[i + 1];
+                if (nextImg && nextImg.getAttribute('src')?.includes('download.png')) {
+                    const nextA = nextImg.closest('a');
+                    if (nextA) {
+                        highResUrl = nextA.getAttribute('href') || pageUrl;
+                    }
+                }
+
+                if (!highResUrl.match(/\.(jpg|jpeg|png|webp|gif)/i)) {
+                    highResUrl = thumbnailUrl;
+                }
+
+                // Fix URLs
+                if (highResUrl.startsWith('//')) highResUrl = 'https:' + highResUrl;
+                if (highResUrl.startsWith('/')) highResUrl = 'https://kpop.asiachan.com' + highResUrl;
+                if (thumbnailUrl.startsWith('//')) thumbnailUrl = 'https:' + thumbnailUrl;
+                if (thumbnailUrl.startsWith('/')) thumbnailUrl = 'https://kpop.asiachan.com' + thumbnailUrl;
+                if (pageUrl.startsWith('/')) pageUrl = 'https://kpop.asiachan.com' + pageUrl;
+
+                results.push({ url: highResUrl, thumbnailUrl, altText, pageUrl });
+            }
             return results;
         });
 
@@ -79,9 +95,11 @@ export async function scrapeAsiaChanImages(): Promise<void> {
         }
 
         const processedScraped: ScrapedImage[] = scraped.map(img => ({
-            ...img,
+            url: img.url,
+            thumbnailUrl: img.thumbnailUrl,
             category: guessCategoryFromAlt(img.altText),
-            source: "AsiaChan"
+            source: `AsiaChan|${img.pageUrl}`,
+            altText: img.altText,
         }));
 
         // Get existing URLs to avoid duplicates
@@ -102,14 +120,11 @@ export async function scrapeAsiaChanImages(): Promise<void> {
 
         // Upload images to Cloudinary before inserting
         console.log(`[asiachan-images] Uploading ${toInsert.length} images to Cloudinary...`);
-        const cloudinaryImages = [];
+        const cloudinaryImages: typeof processedScraped = [];
         for (let i = 0; i < toInsert.length; i++) {
             const img = toInsert[i];
             try {
                 const publicId = `asiachan-${i}-${Date.now()}`;
-                // Cloudinary supports fetching from URLs, but asiachan might block it.
-                // Let's rely on mirrorToCloudinary. If it fails due to Cloudflare, we might need to 
-                // download the buffer with Playwright first, but we will try direct mirror first.
                 const cloudUrl = await mirrorToCloudinary(img.url, publicId, "minju/gallery");
                 const cloudThumb = img.thumbnailUrl !== img.url
                     ? await mirrorToCloudinary(img.thumbnailUrl, `${publicId}-thumb`, "minju/gallery")
@@ -119,21 +134,13 @@ export async function scrapeAsiaChanImages(): Promise<void> {
                     ...img,
                     url: cloudUrl ?? img.url,
                     thumbnailUrl: cloudThumb ?? img.thumbnailUrl,
-                });
+                } as ScrapedImage);
                 console.log(`[asiachan-images] Processed ${i + 1}/${toInsert.length}`);
 
-                // Small delay to avoid rate limiting
                 if (i > 0 && i % 5 === 0) await new Promise((r) => setTimeout(r, 500));
             } catch (e) {
                 console.error(`[asiachan-images] Failed to upload image ${i}:`, e);
-                // Fallback: just use the original URL if upload fails (though it might 403 on frontend)
-                cloudinaryImages.push({
-                    url: img.url,
-                    thumbnailUrl: img.thumbnailUrl,
-                    category: img.category,
-                    source: img.source,
-                    altText: img.altText,
-                });
+                cloudinaryImages.push(img as ScrapedImage);
             }
         }
 

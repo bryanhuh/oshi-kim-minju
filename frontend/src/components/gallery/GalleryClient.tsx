@@ -49,6 +49,11 @@ export default function GalleryClient({
     });
 
   const openLightbox = useCallback((img: GalleryImage, index: number) => {
+    if (img.source?.startsWith("AsiaChan|")) {
+      const url = img.source.split("|")[1];
+      window.open(url, "_blank");
+      return;
+    }
     setLightboxImage(img);
     setLightboxIndex(index);
   }, []);
