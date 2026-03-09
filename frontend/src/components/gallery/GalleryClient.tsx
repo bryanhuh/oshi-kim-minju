@@ -28,12 +28,14 @@ const CATEGORIES = ["All", "Photoshoot", "Drama Still", "Event", "Magazine"];
 
 export default function GalleryClient({
   initialImages,
-  initialInstagram
+  initialInstagram,
+  defaultSection = "gallery",
 }: {
   initialImages: GalleryImage[];
   initialInstagram: InstagramPost[];
+  defaultSection?: "gallery" | "instagram";
 }) {
-  const [section, setSection] = useState<"gallery" | "instagram">("gallery");
+  const [section, setSection] = useState<"gallery" | "instagram">(defaultSection);
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);

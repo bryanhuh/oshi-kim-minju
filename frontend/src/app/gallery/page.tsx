@@ -7,13 +7,22 @@ export const metadata: Metadata = {
   description: "Photo gallery of Kim Minju — photoshoots, drama stills, events, and magazine covers.",
 };
 
-export default async function GalleryPage() {
+export default async function GalleryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
   const images = await fetchImages();
   const instagram = await fetchInstagram();
+  const { tab } = await searchParams;
 
   return (
     <main className="pt-28 pb-20 min-h-screen">
-      <GalleryClient initialImages={images} initialInstagram={instagram} />
+      <GalleryClient
+        initialImages={images}
+        initialInstagram={instagram}
+        defaultSection={tab === "instagram" ? "instagram" : "gallery"}
+      />
     </main>
   );
 }
