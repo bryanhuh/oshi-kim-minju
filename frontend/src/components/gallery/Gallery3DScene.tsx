@@ -34,7 +34,7 @@ function PictureFrame({
         setTexture(tex);
       },
       undefined,
-      () => {}
+      () => { }
     );
     return () => {
       texture?.dispose();
@@ -101,7 +101,7 @@ function PictureFrame({
           anchorY="middle"
           maxWidth={2.2}
         >
-          {image.source}
+          {image.source.includes('|') ? image.source.split('|')[0] : image.source}
         </Text>
       )}
       {/* Hover glow */}

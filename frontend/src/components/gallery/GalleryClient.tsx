@@ -224,7 +224,7 @@ export default function GalleryClient({
                                 {img.category?.replace("_", " ")}
                               </span>
                               {img.source && (
-                                <span className="text-white/50 text-xs">{img.source}</span>
+                                <span className="text-white/50 text-xs">{img.source.includes('|') ? img.source.split('|')[0] : img.source}</span>
                               )}
                             </div>
                           </div>
@@ -340,7 +340,7 @@ export default function GalleryClient({
 
               {lightboxImage.source && (
                 <div className="absolute bottom-3 left-3 glass px-3 py-1 rounded-full">
-                  <span className="text-white/70 text-xs">{lightboxImage.source}</span>
+                  <span className="text-white/70 text-xs">{lightboxImage.source.includes('|') ? lightboxImage.source.split('|')[0] : lightboxImage.source}</span>
                 </div>
               )}
 

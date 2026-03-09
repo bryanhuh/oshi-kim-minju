@@ -18,7 +18,7 @@ export async function fetchWorks(type?: string) {
 export async function fetchImages(category?: string, limit = 50, offset = 0) {
   const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
   if (category) params.set("category", category);
-  const res = await fetch(`${API_BASE}/api/images?${params}`, { next: { revalidate: 1800 } });
+  const res = await fetch(`${API_BASE}/api/images?${params}`, { next: { revalidate: 0 } });
   if (!res.ok) return [];
   return res.json();
 }
