@@ -27,207 +27,13 @@ const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
 
 const CATEGORIES = ["All", "Photoshoot", "Drama Still", "Event", "Magazine"];
 
-const mockImages: GalleryImage[] = [
-  {
-    id: 1,
-    url: "https://picsum.photos/seed/minju-cosmo/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-cosmo/400/600",
-    category: "photoshoot",
-    source: "Cosmopolitan Korea",
-    altText: "Kim Minju Cosmopolitan photoshoot",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    url: "https://picsum.photos/seed/minju-marie/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-marie/400/600",
-    category: "photoshoot",
-    source: "Marie Claire Korea",
-    altText: "Kim Minju Marie Claire photoshoot",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 3,
-    url: "https://picsum.photos/seed/minju-stars/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-stars/400/600",
-    category: "drama_still",
-    source: "Ask the Stars (ENA)",
-    altText: "Kim Minju in Ask the Stars",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 4,
-    url: "https://picsum.photos/seed/minju-stars2/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-stars2/400/600",
-    category: "drama_still",
-    source: "Ask the Stars (ENA)",
-    altText: "Kim Minju in Ask the Stars space scene",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 5,
-    url: "https://picsum.photos/seed/minju-trolley/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-trolley/400/600",
-    category: "drama_still",
-    source: "Trolley (MBC)",
-    altText: "Kim Minju in Trolley MBC drama",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 6,
-    url: "https://picsum.photos/seed/minju-event1/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-event1/400/600",
-    category: "event",
-    source: "Dispatch",
-    altText: "Kim Minju fan event",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 7,
-    url: "https://picsum.photos/seed/minju-award/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-award/400/600",
-    category: "event",
-    source: "Dispatch",
-    altText: "Kim Minju award ceremony",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 8,
-    url: "https://picsum.photos/seed/minju-vogue/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-vogue/400/600",
-    category: "magazine",
-    source: "Vogue Korea",
-    altText: "Kim Minju Vogue Korea magazine cover",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 9,
-    url: "https://picsum.photos/seed/minju-elle/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-elle/400/600",
-    category: "magazine",
-    source: "Elle Korea",
-    altText: "Kim Minju Elle Korea feature",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 10,
-    url: "https://picsum.photos/seed/minju-bloomiz/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-bloomiz/400/600",
-    category: "photoshoot",
-    source: "IZ*ONE BLOOM*IZ era",
-    altText: "Kim Minju IZ*ONE BLOOM*IZ photoshoot",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 11,
-    url: "https://picsum.photos/seed/minju-coloriz/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-coloriz/400/600",
-    category: "photoshoot",
-    source: "IZ*ONE debut era",
-    altText: "Kim Minju IZ*ONE COLOR*IZ debut photoshoot",
-    uploadedAt: new Date().toISOString(),
-  },
-  {
-    id: 12,
-    url: "https://picsum.photos/seed/minju-concert/800/1200",
-    thumbnailUrl: "https://picsum.photos/seed/minju-concert/400/600",
-    category: "event",
-    source: "Dispatch",
-    altText: "Kim Minju IZ*ONE concert",
-    uploadedAt: new Date().toISOString(),
-  },
-];
-
-const mockPosts: InstagramPost[] = [
-  {
-    id: 1,
-    postId: "C1abc123",
-    imageUrl: "https://picsum.photos/seed/minju-ig1/600/600",
-    caption: "새해 복 많이 받으세요 🌸 Happy New Year everyone, thank you for always being by my side 🤍",
-    likes: 487234,
-    postedAt: "2024-01-01T00:00:00Z",
-  },
-  {
-    id: 2,
-    postId: "C2def456",
-    imageUrl: "https://picsum.photos/seed/minju-ig2/600/600",
-    caption: "촬영 현장에서 💕 Behind the scenes today",
-    likes: 412087,
-    postedAt: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: 3,
-    postId: "C3ghi789",
-    imageUrl: "https://picsum.photos/seed/minju-ig3/600/600",
-    caption: "별에게 물어봐 마지막 방송 💙 Thank you for watching Ask the Stars with us.",
-    likes: 623540,
-    postedAt: "2023-12-01T18:00:00Z",
-  },
-  {
-    id: 4,
-    postId: "C4jkl012",
-    imageUrl: "https://picsum.photos/seed/minju-ig4/600/600",
-    caption: "오늘도 행복한 하루 ☁️ 여러분 감사해요",
-    likes: 389102,
-    postedAt: "2023-11-10T09:00:00Z",
-  },
-  {
-    id: 5,
-    postId: "C5mno345",
-    imageUrl: "https://picsum.photos/seed/minju-ig5/600/600",
-    caption: "트롤리 잘 봐주셔서 감사합니다 💖 I'm so grateful for all your support for Trolley.",
-    likes: 511876,
-    postedAt: "2023-02-08T20:00:00Z",
-  },
-  {
-    id: 6,
-    postId: "C6pqr678",
-    imageUrl: "https://picsum.photos/seed/minju-ig6/600/600",
-    caption: "BLOOM*IZ 💐 꽃처럼 피어날게요",
-    likes: 728904,
-    postedAt: "2020-10-27T12:00:00Z",
-  },
-  {
-    id: 7,
-    postId: "C7stu901",
-    imageUrl: "https://picsum.photos/seed/minju-ig7/600/600",
-    caption: "아이즈원 데뷔 🌟 COLOR*IZ 많이 사랑해주세요!",
-    likes: 912345,
-    postedAt: "2018-10-29T00:00:00Z",
-  },
-  {
-    id: 8,
-    postId: "C8vwx234",
-    imageUrl: "https://picsum.photos/seed/minju-ig8/600/600",
-    caption: "팬미팅 너무 행복했어요 💗 I love you all so much, thank you for coming today!",
-    likes: 456789,
-    postedAt: "2023-11-06T19:00:00Z",
-  },
-  {
-    id: 9,
-    postId: "C9yza567",
-    imageUrl: "https://picsum.photos/seed/minju-ig9/600/600",
-    caption: "HEART*IZ 💜 La vie en rose 🌹",
-    likes: 834521,
-    postedAt: "2019-04-01T00:00:00Z",
-  },
-  {
-    id: 10,
-    postId: "C10bcd890",
-    imageUrl: "https://picsum.photos/seed/minju-ig10/600/600",
-    caption: "Spring is here 🌸 봄이 왔어요 오늘 날씨 너무 좋다",
-    likes: 378654,
-    postedAt: "2024-03-15T11:00:00Z",
-  },
-];
-
-function formatLikes(n: number) {
-  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
-  if (n >= 1000) return `${(n / 1000).toFixed(0)}K`;
-  return String(n);
-}
-
-export default function GalleryClient() {
+export default function GalleryClient({
+  initialImages,
+  initialInstagram
+}: {
+  initialImages: GalleryImage[];
+  initialInstagram: InstagramPost[];
+}) {
   const [section, setSection] = useState<"gallery" | "instagram">("gallery");
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
@@ -236,8 +42,8 @@ export default function GalleryClient() {
   const [hoveredPost, setHoveredPost] = useState<number | null>(null);
 
   const filtered = activeCategory === "All"
-    ? mockImages
-    : mockImages.filter((img) => {
+    ? initialImages
+    : initialImages.filter((img) => {
       const cat = activeCategory.toLowerCase().replace(" ", "_");
       return img.category === cat;
     });
@@ -365,9 +171,9 @@ export default function GalleryClient() {
                   className="mb-12"
                 >
                   <Gallery3DScene
-                    images={mockImages}
+                    images={initialImages}
                     onImageClick={(img) => {
-                      const idx = mockImages.findIndex((m) => m.id === img.id);
+                      const idx = initialImages.findIndex((m) => m.id === img.id);
                       openLightbox(img, idx >= 0 ? idx : 0);
                     }}
                   />
@@ -436,7 +242,7 @@ export default function GalleryClient() {
             transition={{ duration: 0.3 }}
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-              {mockPosts.map((post, i) => (
+              {initialInstagram.map((post, i) => (
                 <motion.div
                   key={post.id}
                   initial={{ opacity: 0, y: 20, rotate: (i % 5 - 2) * 1.5 }}
@@ -451,7 +257,7 @@ export default function GalleryClient() {
                   }}
                   style={{ rotate: (i % 5 - 2) * 1.5 }}
                   className="cursor-pointer"
-                  onMouseEnter={() => setHoveredPost(post.id)}
+                  onMouseEnter={() => setHoveredPost(post.id as number)}
                   onMouseLeave={() => setHoveredPost(null)}
                 >
                   <div className="bg-white shadow-md rounded-sm p-2 pb-8 relative">
@@ -465,6 +271,7 @@ export default function GalleryClient() {
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = "none";
                           }}
+                          unoptimized={needsProxy(post.imageUrl)}
                         />
                       )}
                     </div>
@@ -487,7 +294,7 @@ export default function GalleryClient() {
                     {(!hoveredPost || hoveredPost !== post.id) && (
                       <div className="absolute inset-x-2 bottom-1 text-center">
                         <p className="text-[#2a1a20]/30 text-xs">
-                          ♥ {post.likes ? formatLikes(post.likes) : ""}
+                          ♥ {post.likes ? (post.likes >= 1000000 ? `${(post.likes / 1000000).toFixed(1)}M` : post.likes >= 1000 ? `${(post.likes / 1000).toFixed(0)}K` : post.likes) : ""}
                         </p>
                       </div>
                     )}
