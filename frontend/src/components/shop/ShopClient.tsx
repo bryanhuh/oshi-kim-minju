@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { getProxyImageUrl, needsProxy } from "@/lib/api";
 import type { ShopItem } from "@/types";
 
 // Fallback items when no data is available
@@ -146,10 +145,9 @@ export default function ShopClient({ items }: { items: ShopItem[] }) {
                   <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-[#fde8f0] to-[#fdf7fa]">
                     {item.imageUrl ? (
                       <Image
-                        src={getProxyImageUrl(item.imageUrl) as string}
+                        src={item.imageUrl}
                         alt={item.title}
                         fill
-                        unoptimized={needsProxy(item.imageUrl)}
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = "none";
