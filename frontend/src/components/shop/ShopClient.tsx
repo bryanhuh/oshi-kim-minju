@@ -78,7 +78,6 @@ const fallbackItems: ShopItem[] = [
 
 export default function ShopClient({ items }: { items: ShopItem[] }) {
   const displayItems = items.length > 0 ? items : fallbackItems;
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const categories = ["All", ...Array.from(new Set(displayItems.map((i) => i.category).filter(Boolean) as string[]))];
   const [activeCategory, setActiveCategory] = useState("All");
@@ -130,8 +129,6 @@ export default function ShopClient({ items }: { items: ShopItem[] }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.4, delay: Math.min(i * 0.06, 0.4) }}
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
             >
               <a
                 href={item.shopUrl ?? "#"}

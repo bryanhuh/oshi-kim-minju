@@ -30,7 +30,7 @@ export default function DramasClient() {
 
         // Map Dramas
         if (mdlWorks.Drama) {
-          mdlWorks.Drama.forEach((d: any) => {
+          mdlWorks.Drama.forEach((d: { title: { name: string }, year: string, role: { name: string, type: string } }) => {
             mappedWorks.push({
               id: idCount++,
               title: d.title.name,
@@ -47,7 +47,7 @@ export default function DramasClient() {
 
         // Map Movies
         if (mdlWorks.Movie) {
-          mdlWorks.Movie.forEach((m: any) => {
+          mdlWorks.Movie.forEach((m: { title: { name: string }, year: string, role: { name: string, type: string } }) => {
             mappedWorks.push({
               id: idCount++,
               title: m.title.name,
@@ -64,7 +64,7 @@ export default function DramasClient() {
 
         // Map TV Shows to Variety
         if (mdlWorks["TV Show"]) {
-          mdlWorks["TV Show"].forEach((s: any) => {
+          mdlWorks["TV Show"].forEach((s: { title: { name: string }, year: string, role: { name: string, type: string } }) => {
             mappedWorks.push({
               id: idCount++,
               title: s.title.name,

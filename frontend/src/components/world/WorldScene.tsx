@@ -301,8 +301,6 @@ function AreaGroup({
     }
   });
 
-  const baseY = area.position[1];
-
   return (
     <group
       ref={groupRef}
@@ -501,7 +499,7 @@ function FloatingOrbs() {
   const orbsRef = useRef<THREE.Mesh[]>([]);
 
   const orbData = useMemo(() =>
-    Array.from({ length: count }, (_, i) => ({
+    Array.from({ length: count }, () => ({
       position: [
         (Math.random() - 0.5) * 22,
         0.4 + Math.random() * 3,

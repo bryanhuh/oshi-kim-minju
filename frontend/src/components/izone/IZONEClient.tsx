@@ -22,7 +22,7 @@ interface Album {
 }
 
 interface IZONEClientProps {
-  initialAlbums: any[]; // Using local JSON data
+  initialAlbums: Album[]; // Using local JSON data
 }
 
 const members = [

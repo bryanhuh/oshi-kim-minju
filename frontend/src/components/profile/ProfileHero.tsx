@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import FloatingAura from "@/components/ui/FloatingAura";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 export default function ProfileHero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,7 +16,6 @@ export default function ProfileHero() {
   const scale = useTransform(scrollY, [0, 300], [1, 0.8]);
 
   // Mouse move parallax
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const springX = useSpring(0, { stiffness: 50, damping: 20 });
   const springY = useSpring(0, { stiffness: 50, damping: 20 });
 

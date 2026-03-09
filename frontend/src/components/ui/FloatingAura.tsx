@@ -79,7 +79,7 @@ function Particles({ count = 100 }) {
 
     const ref = useRef<THREE.Points>(null!);
 
-    useFrame((state) => {
+    useFrame(() => {
         if (ref.current) {
             ref.current.rotation.y += 0.001;
             ref.current.rotation.x += 0.0005;
