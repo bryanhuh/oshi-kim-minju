@@ -12,7 +12,7 @@ function formatDate(dateStr: string | null) {
 
 export default function NewsClient({ news }: { news: NewsItem[] }) {
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto border-t border-[#f7c6d9]/20">
+    <section id="breaking-news" className="py-24 px-6 max-w-7xl mx-auto border-t border-[#f7c6d9]/20">
       <SectionHeader
         korean="최신 뉴스"
         title="Breaking News"
