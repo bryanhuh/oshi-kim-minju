@@ -1,16 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
+import type { SpotifyAlbum, SpotifyTrack } from "@/lib/spotify";
+import { getTracksAction } from "@/app/actions/spotify";
 
-const discography = [
-  { album: "COLOR*IZ", year: 2018, type: "Mini Album", highlight: "Debut" },
-  { album: "HEART*IZ", year: 2019, type: "Mini Album", highlight: "La Vie en Rose era" },
-  { album: "BLOOM*IZ", year: 2020, type: "Full Album", highlight: "First full album" },
-  { album: "ONEIRIC DIARY", year: 2020, type: "Mini Album", highlight: "Most artistic era" },
-  { album: "ONE-REELER", year: 2021, type: "Mini Album", highlight: "Final chapter" },
-];
+interface IZONEClientProps {
+  initialAlbums: SpotifyAlbum[];
+}
 
 const members = [
   "Jang Wonyoung", "Miyawaki Sakura", "Jo Yuri", "Choi Yena",
@@ -26,33 +26,154 @@ const milestones = [
   { date: "2021.04.29", event: "IZ*ONE officially disbands" },
 ];
 
-export default function IZONEClient() {
+function AlbumCard({ album, index }: { album: SpotifyAlbum; index: number }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const toggleOpen = async () => {
+    if (!isOpen && tracks.length === 0) {
+      setLoading(true);
+      try {
+        const data = await getTracksAction(album.id);
+        setTracks(data);
+      } catch (err) {
+        console.error("Failed to fetch tracks", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="px-6 max-w-5xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="group"
+    >
+      <GlassCard
+        className={`overflow-hidden transition-all duration-500 cursor-pointer ${isOpen ? "ring-2 ring-[#f4a7c1]/40 shadow-2xl shadow-[#f4a7c1]/10" : "hover:border-[#f4a7c1]/30"
+          }`}
+        onClick={toggleOpen}
+      >
+        <div className="flex flex-col md:flex-row gap-6 p-4">
+          {/* Cover Art */}
+          <div className="relative w-full md:w-32 h-44 md:h-32 flex-shrink-0 rounded-xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-500">
+            <Image
+              src={album.images[0]?.url}
+              alt={album.name}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+          </div>
+
+          {/* Details */}
+          <div className="flex-1 min-w-0 pt-1">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] text-[#f4a7c1] font-bold uppercase tracking-[0.2em]">
+                {new Date(album.release_date).getFullYear()}
+              </span>
+              <span className="w-1 h-1 rounded-full bg-[#2a1a20]/10" />
+              <span className="text-[10px] text-[#2a1a20]/40 uppercase tracking-widest leading-none">
+                {album.total_tracks} Tracks
+              </span>
+            </div>
+
+            <h3 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-xl font-light leading-tight mb-2 group-hover:text-[#e8809e] transition-colors line-clamp-2">
+              {album.name}
+            </h3>
+
+            <button className="text-[10px] text-[#f4a7c1] font-medium uppercase tracking-[0.1em] flex items-center gap-2 group/btn">
+              {isOpen ? "Close Tracks" : "Explore Songs"}
+              <motion.span
+                animate={{ x: isOpen ? 0 : 3 }}
+                className="text-lg leading-none"
+              >
+                {isOpen ? "−" : "→"}
+              </motion.span>
+            </button>
+          </div>
+        </div>
+
+        {/* Tracks List */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden border-t border-[#f7c6d9]/10 bg-white/5"
+            >
+              <div className="p-6 space-y-3">
+                {loading ? (
+                  <div className="flex justify-center py-4">
+                    <div className="w-4 h-4 border-2 border-[#f4a7c1]/30 border-t-[#f4a7c1] rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  tracks.map((track) => (
+                    <div key={track.id} className="flex items-center gap-4 group/track">
+                      <span className="text-[10px] font-mono text-[#2a1a20]/20 w-4">
+                        {track.track_number}
+                      </span>
+                      <p className="flex-1 text-sm text-[#2a1a20]/70 group-hover/track:text-[#2a1a20] transition-colors line-clamp-1">
+                        {track.name}
+                      </p>
+                      <span className="text-[10px] text-[#2a1a20]/30">
+                        {Math.floor(track.duration_ms / 60000)}:
+                        {String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, '0')}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </GlassCard>
+    </motion.div>
+  );
+}
+
+export default function IZONEClient({ initialAlbums }: IZONEClientProps) {
+  return (
+    <div className="px-6 max-w-6xl mx-auto">
       <SectionHeader
         korean="아이즈원"
         title="IZ*ONE Era"
         subtitle="2018 – 2021 · A chapter that lives forever in our hearts"
       />
 
-      {/* Hero quote */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="text-center mb-20"
-      >
-        <p className="font-[family-name:var(--font-noto-serif-kr)] text-2xl md:text-3xl font-light text-[#2a1a20]/60 leading-relaxed max-w-2xl mx-auto">
-          &ldquo;Thank you for making us a constellation&rdquo;
-        </p>
-        <p className="mt-4 text-[#f4a7c1] text-xs tracking-[0.3em]">IZ*ONE FINAL CONCERT</p>
-      </motion.div>
+      {/* Hero quote with decorative background blob */}
+      <div className="relative mb-24">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#f7c6d9]/20 blur-[100px] rounded-full -z-10" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="text-center"
+        >
+          <p className="font-[family-name:var(--font-noto-serif-kr)] text-3xl md:text-4xl font-light text-[#2a1a20] italic leading-relaxed max-w-3xl mx-auto">
+            &ldquo;Thank you for making us a constellation&rdquo;
+          </p>
+          <p className="mt-6 text-[#f4a7c1] text-[10px] font-bold tracking-[0.6em] uppercase">
+            IZ*ONE Final Concert Highlight
+          </p>
+        </motion.div>
+      </div>
 
-      {/* Members */}
-      <section className="mb-20">
-        <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-2xl font-light text-center mb-8">
-          Members
-        </h2>
+      {/* Members Section */}
+      <section className="mb-32">
+        <div className="flex items-center gap-4 mb-12">
+          <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-3xl font-light whitespace-nowrap">
+            The Members
+          </h2>
+          <div className="h-px w-full bg-gradient-to-r from-[#f4a7c1]/40 to-transparent" />
+        </div>
+
         <div className="flex flex-wrap justify-center gap-3">
           {members.map((member, i) => (
             <motion.div
@@ -61,11 +182,10 @@ export default function IZONEClient() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05, duration: 0.4 }}
-              className={`px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
-                member === "Kim Minju"
-                  ? "bg-[#f4a7c1] text-white border-[#f4a7c1] pink-glow font-medium"
-                  : "glass border-[#f7c6d9]/40 text-[#2a1a20]/70 hover:border-[#f4a7c1]/60"
-              }`}
+              className={`px-6 py-3 rounded-2xl text-xs border transition-all duration-500 ${member === "Kim Minju"
+                ? "bg-gradient-to-br from-[#f7c6d9] to-[#f4a7c1] text-white border-transparent shadow-lg shadow-[#f4a7c1]/30 font-bold scale-110 z-10"
+                : "glass border-[#f7c6d9]/30 text-[#2a1a20]/60 hover:border-[#f4a7c1]/60 hover:text-[#2a1a20]"
+                }`}
             >
               {member}
             </motion.div>
@@ -73,47 +193,48 @@ export default function IZONEClient() {
         </div>
       </section>
 
-      {/* Discography */}
-      <section className="mb-20">
-        <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-2xl font-light text-center mb-8">
-          Discography
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {discography.map((album, i) => (
-            <GlassCard key={album.album} className="p-6" delay={i * 0.1}>
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-[#f4a7c1] text-xs tracking-widest">{album.year}</span>
-                <span className="text-[#2a1a20]/40 text-xs">{album.type}</span>
-              </div>
-              <h3 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-lg font-light mb-2">
-                {album.album}
-              </h3>
-              <p className="text-[#2a1a20]/50 text-xs tracking-wider">{album.highlight}</p>
-            </GlassCard>
+      {/* Discography Section */}
+      <section className="mb-32">
+        <div className="flex items-center gap-4 mb-12">
+          <div className="h-px w-full bg-gradient-to-l from-[#f4a7c1]/40 to-transparent" />
+          <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-3xl font-light whitespace-nowrap">
+            Discography
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {initialAlbums.map((album, i) => (
+            <AlbumCard key={album.id} album={album} index={i} />
           ))}
         </div>
       </section>
 
-      {/* Timeline */}
-      <section>
-        <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-2xl font-light text-center mb-8">
-          Key Milestones
-        </h2>
-        <div className="relative max-w-lg mx-auto">
-          <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-[#f4a7c1] to-transparent" />
-          <div className="space-y-8">
+      {/* Timeline Section */}
+      <section className="pb-20">
+        <div className="flex items-center gap-4 mb-16">
+          <h2 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-3xl font-light whitespace-nowrap">
+            Journey Timeline
+          </h2>
+          <div className="h-px w-full bg-gradient-to-r from-[#f4a7c1]/40 to-transparent" />
+        </div>
+
+        <div className="relative max-w-2xl mx-auto">
+          <div className="absolute left-[21px] top-0 bottom-0 w-px bg-gradient-to-b from-[#f4a7c1] via-[#f7c6d9] to-transparent" />
+          <div className="space-y-12">
             {milestones.map((m, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="pl-10 relative"
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="pl-14 relative group"
               >
-                <div className="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-[#f4a7c1] border-2 border-white" />
-                <p className="text-[#f4a7c1] text-xs tracking-widest mb-1">{m.date}</p>
-                <p className="text-[#2a1a20]/70 text-sm">{m.event}</p>
+                <div className="absolute left-0 top-0 w-11 h-11 rounded-full border border-[#f7c6d9]/40 bg-[#fdf7fa] flex items-center justify-center transition-all duration-500 group-hover:border-[#f4a7c1] group-hover:shadow-lg group-hover:shadow-[#f4a7c1]/10">
+                  <div className="w-2 h-2 rounded-full bg-[#f4a7c1] group-hover:scale-150 transition-transform" />
+                </div>
+                <p className="text-[#f4a7c1] text-[10px] font-bold tracking-[0.4em] uppercase mb-2">{m.date}</p>
+                <p className="text-[#2a1a20]/80 text-lg font-[family-name:var(--font-noto-serif-kr)] font-light leading-snug group-hover:text-[#2a1a20] transition-colors">{m.event}</p>
               </motion.div>
             ))}
           </div>
