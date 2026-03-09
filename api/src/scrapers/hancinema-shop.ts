@@ -96,6 +96,7 @@ export async function scrapeHancinemaShop(): Promise<void> {
   console.log(`[hancinema-shop] Uploading ${scraped.length} images to Cloudinary...`);
   for (let i = 0; i < scraped.length; i++) {
     const item = scraped[i];
+    if (!item) continue;
     if (item.imageUrl) {
       const publicId = `shop-${item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50)}`;
       const cloudUrl = await mirrorToCloudinary(item.imageUrl, publicId, "minju/shop");

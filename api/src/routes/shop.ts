@@ -11,7 +11,8 @@ shopRoute.get("/", async (c) => {
   const offset = parseInt(c.req.query("offset") ?? "0");
 
   try {
-    const [{ value: rowCount }] = await db.select({ value: count() }).from(shopItems);
+    const result = await db.select({ value: count() }).from(shopItems);
+    const rowCount = result[0]?.value ?? 0;
     if (Number(rowCount) === 0) {
       console.log("[shop] DB empty, scraping HanCinema shop...");
       await scrapeHancinemaShop();

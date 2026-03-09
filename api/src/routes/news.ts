@@ -12,9 +12,8 @@ newsRoute.get("/", async (c) => {
   const offset = parseInt(c.req.query("offset") ?? "0");
 
   try {
-    const [{ value: rowCount }] = await db
-      .select({ value: count() })
-      .from(news);
+    const result = await db.select({ value: count() }).from(news);
+    const rowCount = result[0]?.value ?? 0;
 
     if (Number(rowCount) === 0) {
       console.log("[news] DB empty, scraping HanCinema + Google News RSS...");

@@ -44,10 +44,12 @@ export async function scrapeAsiaChanImages(): Promise<void> {
         // Extract image data
         const scraped = await page.evaluate(() => {
             const results: Array<{ url: string, thumbnailUrl: string, altText: string, pageUrl: string }> = [];
-            const imgs = Array.from(document.querySelectorAll('#content img')) as HTMLImageElement[];
+            // @ts-ignore - document and HTMLImageElement are not available in Node context but work in evaluate
+            const imgs = Array.from(document.querySelectorAll('#content img')) as any[];
 
             for (let i = 0; i < imgs.length; i++) {
                 const img = imgs[i];
+                if (!img) continue;
                 let thumbnailUrl = img.getAttribute('src') || '';
 
                 // Skip UI icons like small.png, medium.png, download.png when they are the primary element
@@ -63,8 +65,8 @@ export async function scrapeAsiaChanImages(): Promise<void> {
 
                 // Look ahead for the download.png which contains the high-res link
                 let highResUrl = pageUrl;
-                let nextImg = imgs[i + 1];
-                if (nextImg && nextImg.getAttribute('src')?.includes('download.png')) {
+                const nextImg = imgs[i + 1];
+                if (nextImg && (nextImg.getAttribute('src') || '').includes('download.png')) {
                     const nextA = nextImg.closest('a');
                     if (nextA) {
                         highResUrl = nextA.getAttribute('href') || pageUrl;
@@ -123,6 +125,7 @@ export async function scrapeAsiaChanImages(): Promise<void> {
         const cloudinaryImages: typeof processedScraped = [];
         for (let i = 0; i < toInsert.length; i++) {
             const img = toInsert[i];
+            if (!img) continue;
             try {
                 const publicId = `asiachan-${i}-${Date.now()}`;
                 const cloudUrl = await mirrorToCloudinary(img.url, publicId, "minju/gallery");

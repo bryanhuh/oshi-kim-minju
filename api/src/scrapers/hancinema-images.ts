@@ -106,6 +106,7 @@ export async function scrapeHancinemaImages(): Promise<void> {
   const cloudinaryImages = [];
   for (let i = 0; i < toInsert.length; i++) {
     const img = toInsert[i];
+    if (!img) continue;
     const publicId = `gallery-${i}-${Date.now()}`;
     const cloudUrl = await mirrorToCloudinary(img.url, publicId, "minju/gallery");
     const cloudThumb = img.thumbnailUrl !== img.url
