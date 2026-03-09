@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { images } from "../db/schema";
+import { db } from "../db/index.js";
+import { images } from "../db/schema.js";
 import { desc, eq, count } from "drizzle-orm";
-import { scrapeHancinemaImages } from "../scrapers/hancinema-images";
+import { scrapeHancinemaImages } from "../scrapers/hancinema-images.js";
 
 const imagesRoute = new Hono();
 

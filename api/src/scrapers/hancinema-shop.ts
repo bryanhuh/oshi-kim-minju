@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
-import { db } from "../db";
-import { shopItems } from "../db/schema";
-import { mirrorToCloudinary } from "../lib/cloudinary";
+import { db } from "../db/index.js";
+import { shopItems } from "../db/schema.js";
+import { mirrorToCloudinary } from "../lib/cloudinary.js";
 
 const BASE_URL = "https://www.hancinema.net";
 const SHOP_URL = `${BASE_URL}/korean_Kim_Minju-shopping.html`;

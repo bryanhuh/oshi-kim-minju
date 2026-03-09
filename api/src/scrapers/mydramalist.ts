@@ -1,5 +1,5 @@
-import { db } from "../db";
-import { works } from "../db/schema";
+import { db } from "../db/index.js";
+import { works } from "../db/schema.js";
 
 export interface ScrapedWork {
   title: string;

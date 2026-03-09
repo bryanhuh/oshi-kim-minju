@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { shopItems } from "../db/schema";
+import { db } from "../db/index.js";
+import { shopItems } from "../db/schema.js";
 import { desc, count } from "drizzle-orm";
-import { scrapeHancinemaShop } from "../scrapers/hancinema-shop";
+import { scrapeHancinemaShop } from "../scrapers/hancinema-shop.js";
 
 const shopRoute = new Hono();
 

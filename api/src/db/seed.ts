@@ -1,5 +1,5 @@
-import { db } from "./index";
-import { minujProfile, works } from "./schema";
+import { db } from "./index.js";
+import { minujProfile, works } from "./schema.js";
 
 async function seed() {
   // Profile

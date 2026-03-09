@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { news } from "../db/schema";
+import { db } from "../db/index.js";
+import { news } from "../db/schema.js";
 import { desc, count } from "drizzle-orm";
-import { scrapeNews } from "../scrapers/news";
-import { scrapeHancinemaNews } from "../scrapers/hancinema-news";
+import { scrapeNews } from "../scrapers/news.js";
+import { scrapeHancinemaNews } from "../scrapers/hancinema-news.js";
 
 const newsRoute = new Hono();
 

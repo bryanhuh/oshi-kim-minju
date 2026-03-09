@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import profile from "./routes/profile";
-import works from "./routes/works";
-import images from "./routes/images";
-import instagram from "./routes/instagram";
-import news from "./routes/news";
-import shop from "./routes/shop";
-import proxy from "./routes/proxy";
+import profile from "./routes/profile.js";
+import works from "./routes/works.js";
+import images from "./routes/images.js";
+import instagram from "./routes/instagram.js";
+import news from "./routes/news.js";
+import shop from "./routes/shop.js";
+import proxy from "./routes/proxy.js";
 
 import { handle } from "hono/vercel";
 

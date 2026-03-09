@@ -1,9 +1,9 @@
-import { scrapeNews } from "./news";
-import { scrapeHancinemaNews } from "./hancinema-news";
-import { scrapeHancinemaImages } from "./hancinema-images";
-import { scrapeHancinemaShop } from "./hancinema-shop";
-import { scrapeWorks } from "./mydramalist";
-import { processHancinemaWorks } from "./hancinema";
+import { scrapeNews } from "./news.js";
+import { scrapeHancinemaNews } from "./hancinema-news.js";
+import { scrapeHancinemaImages } from "./hancinema-images.js";
+import { scrapeHancinemaShop } from "./hancinema-shop.js";
+import { scrapeWorks } from "./mydramalist.js";
+import { processHancinemaWorks } from "./hancinema.js";
 
 async function runAll() {
   console.log("[cron] Starting daily scrape...");

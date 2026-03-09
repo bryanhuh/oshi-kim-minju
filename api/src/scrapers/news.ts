@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
-import { db } from "../db";
-import { news } from "../db/schema";
+import { db } from "../db/index.js";
+import { news } from "../db/schema.js";
 
 const GOOGLE_NEWS_RSS = "https://news.google.com/rss/search?q=Kim+Minju+%EA%B9%80%EB%AF%BC%EC%A3%BC&hl=ko&gl=KR&ceid=KR:ko";
 

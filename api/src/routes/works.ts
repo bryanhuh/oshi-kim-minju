@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { works } from "../db/schema";
+import { db } from "../db/index.js";
+import { works } from "../db/schema.js";
 import { desc, eq, count } from "drizzle-orm";
-import { processHancinemaWorks } from "../scrapers/hancinema";
+import { processHancinemaWorks } from "../scrapers/hancinema.js";
 
 const worksRoute = new Hono();
 

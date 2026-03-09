@@ -5,8 +5,8 @@
  * Run with: bun src/scripts/download-posters.ts
  */
 
-import { db } from "../db";
-import { works } from "../db/schema";
+import { db } from "../db/index.js";
+import { works } from "../db/schema.js";
 import { like, isNotNull } from "drizzle-orm";
 import { join, basename } from "path";
 import { writeFile, mkdir } from "fs/promises";

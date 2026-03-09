@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
-import { db } from "../db";
-import { images } from "../db/schema";
-import { mirrorToCloudinary } from "../lib/cloudinary";
+import { db } from "../db/index.js";
+import { images } from "../db/schema.js";
+import { mirrorToCloudinary } from "../lib/cloudinary.js";
 
 const BASE_URL = "https://www.hancinema.net";
 const GALLERY_URL = `${BASE_URL}/korean_Kim_Minju-picture_gallery.html`;

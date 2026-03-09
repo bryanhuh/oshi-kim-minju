@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { instagramPosts } from "../db/schema";
+import { db } from "../db/index.js";
+import { instagramPosts } from "../db/schema.js";
 import { desc } from "drizzle-orm";
 
 const instagramRoute = new Hono();

@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
-import { db } from "../db";
-import { works } from "../db/schema";
-import { mirrorToCloudinary } from "../lib/cloudinary";
+import { db } from "../db/index.js";
+import { works } from "../db/schema.js";
+import { mirrorToCloudinary } from "../lib/cloudinary.js";
 
 async function uploadPoster(url: string, title: string): Promise<string> {
     const publicId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "");

@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
-import { db } from "../db";
-import { images } from "../db/schema";
-import { mirrorToCloudinary } from "../lib/cloudinary";
+import { db } from "../db/index.js";
+import { images } from "../db/schema.js";
+import { mirrorToCloudinary } from "../lib/cloudinary.js";
 
 const BASE_URL = "https://kpop.asiachan.com";
 const MINJU_URL = `${BASE_URL}/Kim+Minju`;

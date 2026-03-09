@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
-import { db } from "../db";
-import { news } from "../db/schema";
+import { db } from "../db/index.js";
+import { news } from "../db/schema.js";
 
 const BASE_URL = "https://www.hancinema.net";
 const NEWS_URL = `${BASE_URL}/korean_Kim_Minju-news.html`;

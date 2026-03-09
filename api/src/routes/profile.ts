@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { db } from "../db";
-import { minujProfile } from "../db/schema";
+import { db } from "../db/index.js";
+import { minujProfile } from "../db/schema.js";
 
 const profile = new Hono();
 
