@@ -58,7 +58,7 @@ const AREAS: WorldArea[] = [
     shape: "stage",
   },
   {
-    href: "/news",
+    href: "/#breaking-news",
     label: "The Library",
     korean: "도서관",
     position: [-5.5, 0, 3],
@@ -68,7 +68,7 @@ const AREAS: WorldArea[] = [
     shape: "library",
   },
   {
-    href: "/instagram",
+    href: "/gallery?tab=instagram",
     label: "Memory Lane",
     korean: "기억",
     position: [5.5, 0, 3],
@@ -335,18 +335,16 @@ function AreaGroup({
       <AreaShape area={area} />
 
       {/* Glow ring */}
-      {hovered && (
-        <mesh position={[0, -0.04, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[1.1, 1.35, 32]} />
-          <meshStandardMaterial
-            color={area.accentColor}
-            emissive={area.accentColor}
-            emissiveIntensity={0.8}
-            transparent
-            opacity={0.6}
-          />
-        </mesh>
-      )}
+      <mesh position={[0, -0.04, 0]} rotation={[-Math.PI / 2, 0, 0]} visible={hovered}>
+        <ringGeometry args={[1.1, 1.35, 32]} />
+        <meshStandardMaterial
+          color={area.accentColor}
+          emissive={area.accentColor}
+          emissiveIntensity={0.8}
+          transparent
+          opacity={0.6}
+        />
+      </mesh>
 
       {/* Label */}
       <Text
@@ -370,14 +368,12 @@ function AreaGroup({
       </Text>
 
       {/* Hover point light */}
-      {hovered && (
-        <pointLight
-          color={area.accentColor}
-          intensity={3}
-          distance={4}
-          position={[0, 1, 0]}
-        />
-      )}
+      <pointLight
+        color={area.accentColor}
+        intensity={hovered ? 3 : 0}
+        distance={4}
+        position={[0, 1, 0]}
+      />
     </group>
   );
 }
