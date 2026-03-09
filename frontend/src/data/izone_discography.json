@@ -1,0 +1,282 @@
+[
+    {
+        "id": "color-iz",
+        "title": "COLOR*IZ",
+        "type": "EP",
+        "releaseDate": "2018.10.29",
+        "region": "KOR",
+        "coverUrl": "/albums/color_iz.jpg",
+        "tracks": [
+            {
+                "name": "Colors",
+                "duration": "3:38"
+            },
+            {
+                "name": "O' My!",
+                "duration": "3:23"
+            },
+            {
+                "name": "La Vie en Rose",
+                "duration": "3:39"
+            },
+            {
+                "name": "Memory",
+                "duration": "4:07"
+            },
+            {
+                "name": "We Together (IZ*ONE ver.)",
+                "duration": "3:46"
+            },
+            {
+                "name": "Suki ni Nacchau Darō? (IZ*ONE ver.)",
+                "duration": "4:09"
+            },
+            {
+                "name": "Yume wo Miteiru Aida (IZ*ONE ver.)",
+                "duration": "3:29"
+            },
+            {
+                "name": "Pick Me (IZ*ONE ver.)",
+                "duration": "4:39"
+            }
+        ]
+    },
+    {
+        "id": "heart-iz",
+        "title": "HEART*IZ",
+        "type": "EP",
+        "releaseDate": "2019.04.01",
+        "region": "KOR",
+        "coverUrl": "/albums/heart_iz.jpg",
+        "tracks": [
+            {
+                "name": "Hey. Bae. Like It.",
+                "duration": "3:32"
+            },
+            {
+                "name": "Violeta",
+                "duration": "3:20"
+            },
+            {
+                "name": "Highlight",
+                "duration": "3:28"
+            },
+            {
+                "name": "Really Like You",
+                "duration": "3:10"
+            },
+            {
+                "name": "Airplane",
+                "duration": "3:43"
+            },
+            {
+                "name": "Up (하늘 위로)",
+                "duration": "3:12"
+            },
+            {
+                "name": "Neko ni Naritai (Korean ver.)",
+                "duration": "3:41"
+            },
+            {
+                "name": "Gokigen Sayonara (Korean ver.)",
+                "duration": "3:42"
+            }
+        ]
+    },
+    {
+        "id": "bloom-iz",
+        "title": "BLOOM*IZ",
+        "type": "Studio Album",
+        "releaseDate": "2020.02.17",
+        "region": "KOR",
+        "coverUrl": "/albums/bloom_iz.png",
+        "tracks": [
+            {
+                "name": "Eyes",
+                "duration": "3:13"
+            },
+            {
+                "name": "Fiesta",
+                "duration": "3:37"
+            },
+            {
+                "name": "Dreamlike",
+                "duration": "3:46"
+            },
+            {
+                "name": "Ayayaya",
+                "duration": "3:22"
+            },
+            {
+                "name": "So Curious",
+                "duration": "3:22"
+            },
+            {
+                "name": "Spaceship",
+                "duration": "2:51"
+            },
+            {
+                "name": "Destiny",
+                "duration": "3:21"
+            },
+            {
+                "name": "You & I",
+                "duration": "3:24"
+            },
+            {
+                "name": "Daydream",
+                "duration": "3:23"
+            },
+            {
+                "name": "Pink Blushing",
+                "duration": "3:29"
+            },
+            {
+                "name": "Someday",
+                "duration": "3:17"
+            },
+            {
+                "name": "Open Your Eyes",
+                "duration": "3:17"
+            }
+        ]
+    },
+    {
+        "id": "oneiric-diary",
+        "title": "Oneiric Diary",
+        "type": "EP",
+        "releaseDate": "2020.06.15",
+        "region": "KOR",
+        "coverUrl": "/albums/oneiric_diary.jpg",
+        "tracks": [
+            {
+                "name": "Welcome (Intro)",
+                "duration": "1:25"
+            },
+            {
+                "name": "Secret Story of the Swan",
+                "duration": "3:12"
+            },
+            {
+                "name": "Pretty",
+                "duration": "3:19"
+            },
+            {
+                "name": "Merry-Go-Round",
+                "duration": "3:00"
+            },
+            {
+                "name": "Rococo",
+                "duration": "3:11"
+            },
+            {
+                "name": "With*One",
+                "duration": "3:39"
+            },
+            {
+                "name": "Secret Story of the Swan (Japanese ver.)",
+                "duration": "3:12"
+            },
+            {
+                "name": "Merry-Go-Round (Japanese ver.)",
+                "duration": "3:00"
+            }
+        ]
+    },
+    {
+        "id": "one-reeler",
+        "title": "One-reeler / Act IV",
+        "type": "EP",
+        "releaseDate": "2020.12.07",
+        "region": "KOR",
+        "coverUrl": "/albums/one-reeler.jpg",
+        "tracks": [
+            {
+                "name": "Mise-en-Scène",
+                "duration": "3:19"
+            },
+            {
+                "name": "Panorama",
+                "duration": "3:42"
+            },
+            {
+                "name": "Island",
+                "duration": "3:13"
+            },
+            {
+                "name": "Sequence",
+                "duration": "3:10"
+            },
+            {
+                "name": "O Sole Mio",
+                "duration": "3:22"
+            },
+            {
+                "name": "Slow Journey",
+                "duration": "3:19"
+            }
+        ]
+    },
+    {
+        "id": "twelve",
+        "title": "Twelve",
+        "type": "Japanese Studio Album",
+        "releaseDate": "2020.10.21",
+        "region": "JPN",
+        "coverUrl": "/albums/twelve.jpg",
+        "tracks": [
+            {
+                "name": "Beware",
+                "duration": "4:10"
+            },
+            {
+                "name": "Vampire",
+                "duration": "3:48"
+            },
+            {
+                "name": "Suki to Iwasetai",
+                "duration": "3:59"
+            },
+            {
+                "name": "Waiting",
+                "duration": "4:11"
+            },
+            {
+                "name": "Buenos Aires",
+                "duration": "4:20"
+            },
+            {
+                "name": "Suki ni Nacchau Darō?",
+                "duration": "4:09"
+            },
+            {
+                "name": "Yummy Summer",
+                "duration": "3:25"
+            },
+            {
+                "name": "La Vie en Rose (Japanese ver.)",
+                "duration": "3:41"
+            },
+            {
+                "name": "Violeta (Japanese ver.)",
+                "duration": "3:22"
+            },
+            {
+                "name": "Fiesta (Japanese ver.)",
+                "duration": "3:41"
+            },
+            {
+                "name": "Yume wo Miteiru Aida",
+                "duration": "3:29"
+            },
+            {
+                "name": "Dōsureba Ii?",
+                "duration": "2:52"
+            },
+            {
+                "name": "Shy boy",
+                "duration": "4:22"
+            }
+        ]
+    }
+]

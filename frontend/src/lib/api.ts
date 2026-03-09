@@ -50,16 +50,15 @@ export async function fetchNews(limit = 20, offset = 0) {
 export function getProxyImageUrl(url: string | null | undefined): string | null | undefined {
   if (!url) return url;
   // Local static files (/posters/*) are served directly — no proxy needed
-  if (url.startsWith("/")) return url;
-  if (url.includes("hancinema.net")) {
-    return `/api/proxy?url=${encodeURIComponent(url)}`;
-  }
-  return url;
+  if (url.startsWith("/") || url.startsWith("http://localhost")) return url;
+
+  // Proxy all other remote URLs to avoid CORS and ORB issues
+  return `/api/proxy?url=${encodeURIComponent(url)}`;
 }
 
 /** Returns true if the URL will be served through the local proxy (requires unoptimized on next/image) */
 export function needsProxy(url: string | null | undefined): boolean {
   if (!url) return false;
-  // Local paths never need proxy; only remote hancinema URLs do
-  return !url.startsWith("/") && url.includes("hancinema.net");
+  // All remote URLs need proxying to avoid browser security blocks
+  return !url.startsWith("/") && !url.startsWith("http://localhost");
 }

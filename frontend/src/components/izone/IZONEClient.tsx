@@ -5,11 +5,25 @@ import { useState } from "react";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
-import type { SpotifyAlbum, SpotifyTrack } from "@/lib/spotify";
-import { getTracksAction } from "@/app/actions/spotify";
+import { getProxyImageUrl } from "@/lib/api";
+
+interface Track {
+  name: string;
+  duration: string;
+}
+
+interface Album {
+  id: string;
+  title: string;
+  type: string;
+  releaseDate: string;
+  region: string;
+  coverUrl: string;
+  tracks: Track[];
+}
 
 interface IZONEClientProps {
-  initialAlbums: SpotifyAlbum[];
+  initialAlbums: any[]; // Using local JSON data
 }
 
 const members = [
@@ -26,25 +40,8 @@ const milestones = [
   { date: "2021.04.29", event: "IZ*ONE officially disbands" },
 ];
 
-function AlbumCard({ album, index }: { album: SpotifyAlbum; index: number }) {
+function AlbumCard({ album, index }: { album: Album; index: number }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const toggleOpen = async () => {
-    if (!isOpen && tracks.length === 0) {
-      setLoading(true);
-      try {
-        const data = await getTracksAction(album.id);
-        setTracks(data);
-      } catch (err) {
-        console.error("Failed to fetch tracks", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    setIsOpen(!isOpen);
-  };
 
   return (
     <motion.div
@@ -57,34 +54,35 @@ function AlbumCard({ album, index }: { album: SpotifyAlbum; index: number }) {
       <GlassCard
         className={`overflow-hidden transition-all duration-500 cursor-pointer ${isOpen ? "ring-2 ring-[#f4a7c1]/40 shadow-2xl shadow-[#f4a7c1]/10" : "hover:border-[#f4a7c1]/30"
           }`}
-        onClick={toggleOpen}
+        onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex flex-col md:flex-row gap-6 p-4">
           {/* Cover Art */}
           <div className="relative w-full md:w-32 h-44 md:h-32 flex-shrink-0 rounded-xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-500">
             <Image
-              src={album.images[0]?.url}
-              alt={album.name}
+              src={getProxyImageUrl(album.coverUrl) || album.coverUrl}
+              alt={album.title}
               fill
               className="object-cover"
+              unoptimized
             />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+            <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
           </div>
 
           {/* Details */}
           <div className="flex-1 min-w-0 pt-1">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] text-[#f4a7c1] font-bold uppercase tracking-[0.2em]">
-                {new Date(album.release_date).getFullYear()}
+                {new Date(album.releaseDate).getFullYear()}
               </span>
               <span className="w-1 h-1 rounded-full bg-[#2a1a20]/10" />
               <span className="text-[10px] text-[#2a1a20]/40 uppercase tracking-widest leading-none">
-                {album.total_tracks} Tracks
+                {album.type}
               </span>
             </div>
 
             <h3 className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-xl font-light leading-tight mb-2 group-hover:text-[#e8809e] transition-colors line-clamp-2">
-              {album.name}
+              {album.title}
             </h3>
 
             <button className="text-[10px] text-[#f4a7c1] font-medium uppercase tracking-[0.1em] flex items-center gap-2 group/btn">
@@ -109,26 +107,19 @@ function AlbumCard({ album, index }: { album: SpotifyAlbum; index: number }) {
               className="overflow-hidden border-t border-[#f7c6d9]/10 bg-white/5"
             >
               <div className="p-6 space-y-3">
-                {loading ? (
-                  <div className="flex justify-center py-4">
-                    <div className="w-4 h-4 border-2 border-[#f4a7c1]/30 border-t-[#f4a7c1] rounded-full animate-spin" />
+                {album.tracks.map((track, i) => (
+                  <div key={i} className="flex items-center gap-4 group/track">
+                    <span className="text-[10px] font-mono text-[#2a1a20]/20 w-4">
+                      {i + 1}
+                    </span>
+                    <p className="flex-1 text-sm text-[#2a1a20]/70 group-hover/track:text-[#2a1a20] transition-colors line-clamp-1">
+                      {track.name}
+                    </p>
+                    <span className="text-[10px] text-[#2a1a20]/30 font-mono">
+                      {track.duration}
+                    </span>
                   </div>
-                ) : (
-                  tracks.map((track) => (
-                    <div key={track.id} className="flex items-center gap-4 group/track">
-                      <span className="text-[10px] font-mono text-[#2a1a20]/20 w-4">
-                        {track.track_number}
-                      </span>
-                      <p className="flex-1 text-sm text-[#2a1a20]/70 group-hover/track:text-[#2a1a20] transition-colors line-clamp-1">
-                        {track.name}
-                      </p>
-                      <span className="text-[10px] text-[#2a1a20]/30">
-                        {Math.floor(track.duration_ms / 60000)}:
-                        {String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, '0')}
-                      </span>
-                    </div>
-                  ))
-                )}
+                ))}
               </div>
             </motion.div>
           )}
