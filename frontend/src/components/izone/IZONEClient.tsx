@@ -5,7 +5,6 @@ import { useState } from "react";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
-import { getProxyImageUrl } from "@/lib/api";
 
 interface Track {
   name: string;
@@ -60,11 +59,10 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
           {/* Cover Art */}
           <div className="relative w-full md:w-32 h-44 md:h-32 flex-shrink-0 rounded-xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-500">
             <Image
-              src={getProxyImageUrl(album.coverUrl) || album.coverUrl}
+              src={album.coverUrl}
               alt={album.title}
               fill
               className="object-cover"
-              unoptimized
             />
             <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
           </div>

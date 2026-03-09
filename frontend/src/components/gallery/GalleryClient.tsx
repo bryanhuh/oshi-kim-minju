@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { getProxyImageUrl, needsProxy } from "@/lib/api";
 import type { GalleryImage, InstagramPost } from "@/types";
 
 const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
@@ -208,11 +207,10 @@ export default function GalleryClient({
                       >
                         <div className="relative overflow-hidden rounded-xl">
                           <Image
-                            src={getProxyImageUrl(img.thumbnailUrl) || getProxyImageUrl(img.url) || ""}
+                            src={img.thumbnailUrl || img.url || ""}
                             alt={img.altText ?? "Kim Minju"}
                             width={400}
                             height={i % 3 === 0 ? 600 : 400}
-                            unoptimized={needsProxy(img.thumbnailUrl) || needsProxy(img.url)}
                             className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display = "none";
@@ -276,7 +274,6 @@ export default function GalleryClient({
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = "none";
                           }}
-                          unoptimized={needsProxy(post.imageUrl)}
                         />
                       )}
                     </div>
@@ -330,11 +327,10 @@ export default function GalleryClient({
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={getProxyImageUrl(lightboxImage.url) as string}
+                src={lightboxImage.url}
                 alt={lightboxImage.altText ?? "Kim Minju"}
                 width={800}
                 height={1000}
-                unoptimized={needsProxy(lightboxImage.url)}
                 className="object-contain max-h-[80vh] rounded-xl"
               />
 
