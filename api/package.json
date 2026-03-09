@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "start": "bun src/index.ts",
+    "vercel-build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs --outfile=api/index.js --packages=external --define:import.meta.main=false",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -16,6 +17,7 @@
     "@types/cheerio": "^1.0.0",
     "@types/node": "^25.3.3",
     "drizzle-kit": "^0.31.9",
+    "esbuild": "^0.25.0",
     "playwright": "^1.58.2"
   },
   "peerDependencies": {
