@@ -6,6 +6,7 @@ out
 dist
 *.tgz
 api/index.js
+api/index.mjs
 
 # environment variables
 .env

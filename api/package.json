@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "start": "bun src/index.ts",
-    "vercel-build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs --outfile=api/index.js --packages=external --define:import.meta.main=false",
+    "vercel-build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=api/index.mjs --packages=external --define:import.meta.main=false",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
