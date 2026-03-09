@@ -15,7 +15,8 @@
     "@types/bun": "latest",
     "@types/cheerio": "^1.0.0",
     "@types/node": "^25.3.3",
-    "drizzle-kit": "^0.31.9"
+    "drizzle-kit": "^0.31.9",
+    "playwright": "^1.58.2"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -25,7 +26,6 @@
     "cloudinary": "^2.9.0",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.12.5",
-    "playwright": "^1.58.2",
     "postgres": "^3.4.8"
   }
 }
