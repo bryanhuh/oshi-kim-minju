@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { InstagramPost } from "@/types";
@@ -190,123 +191,126 @@ export default function InstagramClient({ posts: initialPosts }: { posts: Instag
         </motion.div>
       )}
 
-      <AnimatePresence>
-        {lightboxPost && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
-            onClick={closeLightbox}
-          >
-            <button
-              onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
-              className="absolute top-6 right-6 w-10 h-10 glass rounded-full text-white text-lg flex items-center justify-center hover:bg-white/20 transition-colors z-[110] cursor-pointer"
-            >
-              ✕
-            </button>
-
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {lightboxPost && (
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-[95vw] md:max-w-6xl h-[85vh] md:h-[90vh] flex flex-col md:flex-row bg-white border border-white/10 rounded-sm overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+              onClick={closeLightbox}
             >
-              {/* Image Area */}
-              <div className="relative flex-1 bg-black flex items-center justify-center min-h-0 md:h-full">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={imageIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="relative w-full h-full flex items-center justify-center bg-black"
-                  >
-                    {(lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mp4') || (lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mov') ? (
-                      <video
-                        src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
-                        controls
-                        autoPlay
-                        className="max-w-full max-h-full object-contain"
-                      />
-                    ) : (
-                      <Image
-                        src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
-                        alt="Instagram Media"
-                        fill
-                        className="object-contain"
-                      />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
+              <button
+                onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                className="absolute top-6 right-6 w-10 h-10 glass rounded-full text-white text-lg flex items-center justify-center hover:bg-white/20 transition-colors z-[110] cursor-pointer"
+              >
+                ✕
+              </button>
 
-                {lightboxPost.images && lightboxPost.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-[95vw] md:max-w-6xl h-[85vh] md:h-[90vh] flex flex-col md:flex-row bg-white border border-white/10 rounded-sm overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Image Area */}
+                <div className="relative flex-1 bg-black flex items-center justify-center min-h-0 md:h-full">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={imageIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative w-full h-full flex items-center justify-center bg-black"
                     >
-                      ←
-                    </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); navigate(1); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
-                    >
-                      →
-                    </button>
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass px-3 py-1.5 rounded-full flex gap-1.5 items-center z-10">
-                      {lightboxPost.images.map((_, idx) => (
-                        <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-all ${idx === imageIndex ? 'bg-white scale-125' : 'bg-white/40'}`} />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
+                      {(lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mp4') || (lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mov') ? (
+                        <video
+                          src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
+                          controls
+                          autoPlay
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      ) : (
+                        <Image
+                          src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
+                          alt="Instagram Media"
+                          fill
+                          className="object-contain"
+                        />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
 
-              {/* Sidebar / Caption Area */}
-              <div className="w-full md:w-80 lg:w-96 bg-white flex flex-col max-h-[40vh] md:max-h-[90vh]">
-                <div className="p-4 border-b border-gray-100 flex items-center gap-3 shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
-                    <div className="w-full h-full bg-white rounded-full overflow-hidden border border-white relative">
-                      <Image src="/images/hero.jpg" alt="Minju" fill className="object-cover" />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900 leading-none mb-0.5">minn.__.ju</h4>
-                    <span className="text-xs text-gray-500">{formatDate(lightboxPost.postedAt)}</span>
-                  </div>
+                  {lightboxPost.images && lightboxPost.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); navigate(-1); }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
+                      >
+                        ←
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); navigate(1); }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
+                      >
+                        →
+                      </button>
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass px-3 py-1.5 rounded-full flex gap-1.5 items-center z-10">
+                        {lightboxPost.images.map((_, idx) => (
+                          <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-all ${idx === imageIndex ? 'bg-white scale-125' : 'bg-white/40'}`} />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
 
-                <div className="p-4 flex-1 overflow-y-auto min-h-[100px] text-sm text-gray-800">
-                  <div className="flex gap-3 mb-2">
-                    <div className="w-8 h-8 shrink-0 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
+                {/* Sidebar / Caption Area */}
+                <div className="w-full md:w-80 lg:w-96 bg-white flex flex-col max-h-[40vh] md:max-h-[90vh]">
+                  <div className="p-4 border-b border-gray-100 flex items-center gap-3 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
                       <div className="w-full h-full bg-white rounded-full overflow-hidden border border-white relative">
                         <Image src="/images/hero.jpg" alt="Minju" fill className="object-cover" />
                       </div>
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-900 mr-2">minn.__.ju</span>
-                      <span className="font-[family-name:var(--font-noto-serif-kr)] whitespace-pre-wrap leading-relaxed">
-                        {(!lightboxPost.caption || lightboxPost.caption === "None") ? "♡" : lightboxPost.caption}
-                      </span>
+                      <h4 className="text-sm font-semibold text-gray-900 leading-none mb-0.5">minn.__.ju</h4>
+                      <span className="text-xs text-gray-500">{formatDate(lightboxPost.postedAt)}</span>
                     </div>
                   </div>
-                </div>
 
-                {lightboxPost.likes ? (
-                  <div className="p-4 border-t border-gray-100 flex shrink-0 items-center gap-2 text-gray-900">
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#2a1a20]"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
-                    <span className="text-sm font-semibold">{formatLikes(lightboxPost.likes)} likes</span>
+                  <div className="p-4 flex-1 overflow-y-auto min-h-[100px] text-sm text-gray-800">
+                    <div className="flex gap-3 mb-2">
+                      <div className="w-8 h-8 shrink-0 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
+                        <div className="w-full h-full bg-white rounded-full overflow-hidden border border-white relative">
+                          <Image src="/images/hero.jpg" alt="Minju" fill className="object-cover" />
+                        </div>
+                      </div>
+                      <div>
+                        <span className="font-semibold text-gray-900 mr-2">minn.__.ju</span>
+                        <span className="font-[family-name:var(--font-noto-serif-kr)] whitespace-pre-wrap leading-relaxed">
+                          {(!lightboxPost.caption || lightboxPost.caption === "None") ? "♡" : lightboxPost.caption}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                ) : null}
-              </div>
+
+                  {lightboxPost.likes ? (
+                    <div className="p-4 border-t border-gray-100 flex shrink-0 items-center gap-2 text-gray-900">
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#2a1a20]"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+                      <span className="text-sm font-semibold">{formatLikes(lightboxPost.likes)} likes</span>
+                    </div>
+                  ) : null}
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }

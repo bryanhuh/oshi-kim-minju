@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -262,60 +263,63 @@ export default function GalleryClient({
       </AnimatePresence>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/90 backdrop-blur-md flex items-center justify-center"
-            onClick={() => setLightboxImage(null)}
-          >
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {lightboxImage && (
             <motion.div
-              initial={{ scale: 0.85 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.85 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-w-3xl max-h-[90vh] mx-6"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/90 backdrop-blur-md flex items-center justify-center"
+              onClick={() => setLightboxImage(null)}
             >
-              <Image
-                src={lightboxImage.url}
-                alt={lightboxImage.altText ?? "Kim Minju"}
-                width={800}
-                height={1000}
-                className="object-contain max-h-[80vh] rounded-xl"
-              />
-
-              {lightboxImage.source && (
-                <div className="absolute bottom-3 left-3 glass px-3 py-1 rounded-full">
-                  <span className="text-white/70 text-xs">{lightboxImage.source.includes('|') ? lightboxImage.source.split('|')[0] : lightboxImage.source}</span>
-                </div>
-              )}
-
-              <button
-                onClick={() => setLightboxImage(null)}
-                className="absolute top-3 right-3 w-8 h-8 glass rounded-full text-white text-sm flex items-center justify-center hover:bg-white/20 transition-colors"
+              <motion.div
+                initial={{ scale: 0.85 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.85 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative max-w-3xl max-h-[90vh] mx-6"
+                onClick={(e) => e.stopPropagation()}
               >
-                ✕
-              </button>
+                <Image
+                  src={lightboxImage.url}
+                  alt={lightboxImage.altText ?? "Kim Minju"}
+                  width={800}
+                  height={1000}
+                  className="object-contain max-h-[80vh] rounded-xl"
+                />
 
-              <button
-                onClick={() => navigate(-1)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                ←
-              </button>
-              <button
-                onClick={() => navigate(1)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                →
-              </button>
+                {lightboxImage.source && (
+                  <div className="absolute bottom-3 left-3 glass px-3 py-1 rounded-full">
+                    <span className="text-white/70 text-xs">{lightboxImage.source.includes('|') ? lightboxImage.source.split('|')[0] : lightboxImage.source}</span>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setLightboxImage(null)}
+                  className="absolute top-3 right-3 w-8 h-8 glass rounded-full text-white text-sm flex items-center justify-center hover:bg-white/20 transition-colors"
+                >
+                  ✕
+                </button>
+
+                <button
+                  onClick={() => navigate(-1)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+                >
+                  ←
+                </button>
+                <button
+                  onClick={() => navigate(1)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+                >
+                  →
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
