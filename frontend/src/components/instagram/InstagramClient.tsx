@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { InstagramPost } from "@/types";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const PAGE_SIZE = 30;
+
 function formatLikes(n: number | null | undefined) {
   if (!n) return "";
   if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
@@ -18,12 +21,33 @@ function formatDate(dateStr: string | null | undefined) {
   return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
-export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
+export default function InstagramClient({ posts: initialPosts }: { posts: InstagramPost[] }) {
+  const [posts, setPosts] = useState<InstagramPost[]>(initialPosts);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(initialPosts.length >= PAGE_SIZE);
 
   // Lightbox state
   const [lightboxPost, setLightboxPost] = useState<InstagramPost | null>(null);
   const [imageIndex, setImageIndex] = useState(0);
+
+  const loadMore = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${API_BASE}/api/instagram?limit=${PAGE_SIZE}&offset=${posts.length}`
+      );
+      if (res.ok) {
+        const newPosts: InstagramPost[] = await res.json();
+        setPosts((prev) => [...prev, ...newPosts]);
+        if (newPosts.length < PAGE_SIZE) setHasMore(false);
+      }
+    } catch (err) {
+      console.error("Failed to load more posts:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openLightbox = (post: InstagramPost) => {
     setLightboxPost(post);
@@ -122,6 +146,49 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
           </motion.div>
         ))}
       </div>
+
+      {/* Cute Load More Pagination */}
+      {hasMore && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center mt-12 mb-4 gap-3"
+        >
+          <div className="flex items-center gap-3">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#f4a7c1]/40" />
+            <motion.button
+              onClick={loadMore}
+              disabled={loading}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative px-8 py-3 rounded-full bg-white shadow-md border border-[#f4a7c1]/30 hover:border-[#f4a7c1] transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="w-4 h-4 border-2 border-[#f4a7c1] border-t-transparent rounded-full"
+                  />
+                  <span className="text-[#e8809e] text-xs tracking-widest font-medium">Loading...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-[#2a1a20]/60 text-xs tracking-widest font-medium group-hover:text-[#e8809e] transition-colors">
+                    More Memories
+                  </span>
+                  <span className="text-[#f4a7c1] group-hover:text-[#e8809e] transition-colors text-sm">♡</span>
+                </div>
+              )}
+            </motion.button>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#f4a7c1]/40" />
+          </div>
+          <p className="text-[#2a1a20]/30 text-[10px] tracking-widest">
+            {posts.length} posts loaded
+          </p>
+        </motion.div>
+      )}
 
       <AnimatePresence>
         {lightboxPost && (
