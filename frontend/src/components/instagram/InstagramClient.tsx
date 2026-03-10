@@ -94,7 +94,7 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
                   >
                     <p className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-[10px] leading-tight line-clamp-2">
                       <span className="font-semibold block mb-0.5">{formatDate(post.postedAt)}</span>
-                      {post.caption || ""}
+                      {(!post.caption || post.caption === "None") ? "♡" : post.caption}
                     </p>
                   </motion.div>
                 )}
@@ -133,7 +133,7 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row bg-white border border-white/10 rounded-sm overflow-hidden shadow-2xl"
+              className="relative w-full max-w-[95vw] md:max-w-6xl h-[85vh] md:h-[90vh] flex flex-col md:flex-row bg-white border border-white/10 rounded-sm overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image Area */}
@@ -169,13 +169,13 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
                   <>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10 shadow-lg"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg"
                     >
                       ←
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(1); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10 shadow-lg"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg"
                     >
                       →
                     </button>
@@ -212,7 +212,7 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
                     <div>
                       <span className="font-semibold text-gray-900 mr-2">minn.__.ju</span>
                       <span className="font-[family-name:var(--font-noto-serif-kr)] whitespace-pre-wrap leading-relaxed">
-                        {lightboxPost.caption}
+                        {(!lightboxPost.caption || lightboxPost.caption === "None") ? "♡" : lightboxPost.caption}
                       </span>
                     </div>
                   </div>
