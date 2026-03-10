@@ -19,7 +19,7 @@ export async function uploadToCloudinary(
         public_id: publicId,
         folder,
         overwrite: false,
-        resource_type: "image",
+        resource_type: "auto",
       },
       (error, result) => {
         if (error) reject(error);
