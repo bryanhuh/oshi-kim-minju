@@ -137,7 +137,7 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image Area */}
-              <div className="relative flex-1 bg-black flex items-center justify-center aspect-square md:aspect-auto">
+              <div className="relative flex-1 bg-black flex items-center justify-center min-h-0 md:h-full">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={imageIndex}
