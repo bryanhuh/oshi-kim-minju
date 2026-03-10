@@ -27,6 +27,7 @@ export interface InstagramPost {
   caption: string | null;
   likes: number | null;
   postedAt: string | null;
+  images?: string[];
 }
 
 export interface NewsItem {

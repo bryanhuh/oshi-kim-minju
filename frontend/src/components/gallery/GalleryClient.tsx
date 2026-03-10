@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import type { GalleryImage, InstagramPost } from "@/types";
+import InstagramClient from "@/components/instagram/InstagramClient";
 
 const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
   ssr: false,
@@ -40,8 +41,6 @@ export default function GalleryClient({
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
-  const [hoveredPost, setHoveredPost] = useState<number | null>(null);
-
   const filtered = activeCategory === "All"
     ? initialImages
     : initialImages.filter((img) => {
@@ -246,66 +245,7 @@ export default function GalleryClient({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-              {initialInstagram.map((post, i) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 20, rotate: (i % 5 - 2) * 1.5 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.05 }}
-                  whileHover={{
-                    scale: 1.05,
-                    rotate: 0,
-                    zIndex: 10,
-                    transition: { duration: 0.3 },
-                  }}
-                  style={{ rotate: (i % 5 - 2) * 1.5 }}
-                  className="cursor-pointer"
-                  onMouseEnter={() => setHoveredPost(post.id as number)}
-                  onMouseLeave={() => setHoveredPost(null)}
-                >
-                  <div className="bg-white shadow-md rounded-sm p-2 pb-8 relative">
-                    <div className="relative aspect-square overflow-hidden bg-[#fde8f0]">
-                      {post.imageUrl && (
-                        <Image
-                          src={post.imageUrl}
-                          alt="Instagram post"
-                          fill
-                          className="object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
-                          }}
-                        />
-                      )}
-                    </div>
-
-                    <AnimatePresence>
-                      {hoveredPost === post.id && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="absolute inset-x-2 bottom-1 text-center"
-                        >
-                          <p className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-xs leading-tight line-clamp-2">
-                            {post.caption}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {(!hoveredPost || hoveredPost !== post.id) && (
-                      <div className="absolute inset-x-2 bottom-1 text-center">
-                        <p className="text-[#2a1a20]/30 text-xs">
-                          ♥ {post.likes ? (post.likes >= 1000000 ? `${(post.likes / 1000000).toFixed(1)}M` : post.likes >= 1000 ? `${(post.likes / 1000).toFixed(0)}K` : post.likes) : ""}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <InstagramClient posts={initialInstagram} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,112 +3,47 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import SectionHeader from "@/components/ui/SectionHeader";
 import type { InstagramPost } from "@/types";
 
-// Real captions sourced from @kimminju_official Instagram posts
-const mockPosts: InstagramPost[] = [
-  {
-    id: 1,
-    postId: "C1abc123",
-    imageUrl: "https://picsum.photos/seed/minju-ig1/600/600",
-    caption: "새해 복 많이 받으세요 🌸 Happy New Year everyone, thank you for always being by my side 🤍",
-    likes: 487234,
-    postedAt: "2024-01-01T00:00:00Z",
-  },
-  {
-    id: 2,
-    postId: "C2def456",
-    imageUrl: "https://picsum.photos/seed/minju-ig2/600/600",
-    caption: "촬영 현장에서 💕 Behind the scenes today",
-    likes: 412087,
-    postedAt: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: 3,
-    postId: "C3ghi789",
-    imageUrl: "https://picsum.photos/seed/minju-ig3/600/600",
-    caption: "별에게 물어봐 마지막 방송 💙 Thank you for watching Ask the Stars with us. This drama will stay in my heart forever.",
-    likes: 623540,
-    postedAt: "2023-12-01T18:00:00Z",
-  },
-  {
-    id: 4,
-    postId: "C4jkl012",
-    imageUrl: "https://picsum.photos/seed/minju-ig4/600/600",
-    caption: "오늘도 행복한 하루 ☁️ 여러분 감사해요",
-    likes: 389102,
-    postedAt: "2023-11-10T09:00:00Z",
-  },
-  {
-    id: 5,
-    postId: "C5mno345",
-    imageUrl: "https://picsum.photos/seed/minju-ig5/600/600",
-    caption: "트롤리 잘 봐주셔서 감사합니다 💖 I'm so grateful for all your support for Trolley.",
-    likes: 511876,
-    postedAt: "2023-02-08T20:00:00Z",
-  },
-  {
-    id: 6,
-    postId: "C6pqr678",
-    imageUrl: "https://picsum.photos/seed/minju-ig6/600/600",
-    caption: "BLOOM*IZ 💐 꽃처럼 피어날게요",
-    likes: 728904,
-    postedAt: "2020-10-27T12:00:00Z",
-  },
-  {
-    id: 7,
-    postId: "C7stu901",
-    imageUrl: "https://picsum.photos/seed/minju-ig7/600/600",
-    caption: "아이즈원 데뷔 🌟 COLOR*IZ 많이 사랑해주세요!",
-    likes: 912345,
-    postedAt: "2018-10-29T00:00:00Z",
-  },
-  {
-    id: 8,
-    postId: "C8vwx234",
-    imageUrl: "https://picsum.photos/seed/minju-ig8/600/600",
-    caption: "팬미팅 너무 행복했어요 💗 I love you all so much, thank you for coming today!",
-    likes: 456789,
-    postedAt: "2023-11-06T19:00:00Z",
-  },
-  {
-    id: 9,
-    postId: "C9yza567",
-    imageUrl: "https://picsum.photos/seed/minju-ig9/600/600",
-    caption: "HEART*IZ 💜 La vie en rose 🌹",
-    likes: 834521,
-    postedAt: "2019-04-01T00:00:00Z",
-  },
-  {
-    id: 10,
-    postId: "C10bcd890",
-    imageUrl: "https://picsum.photos/seed/minju-ig10/600/600",
-    caption: "Spring is here 🌸 봄이 왔어요 오늘 날씨 너무 좋다",
-    likes: 378654,
-    postedAt: "2024-03-15T11:00:00Z",
-  },
-];
-
-function formatLikes(n: number) {
+function formatLikes(n: number | null | undefined) {
+  if (!n) return "";
   if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
   if (n >= 1000) return `${(n / 1000).toFixed(0)}K`;
   return String(n);
 }
 
-export default function InstagramClient() {
+function formatDate(dateStr: string | null | undefined) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  return (
-    <div className="px-6 max-w-7xl mx-auto">
-      <SectionHeader
-        korean="인스타그램"
-        title="Instagram Archive"
-        subtitle="Polaroid moments from Minju's world"
-      />
+  // Lightbox state
+  const [lightboxPost, setLightboxPost] = useState<InstagramPost | null>(null);
+  const [imageIndex, setImageIndex] = useState(0);
 
+  const openLightbox = (post: InstagramPost) => {
+    setLightboxPost(post);
+    setImageIndex(0);
+  };
+
+  const closeLightbox = () => {
+    setLightboxPost(null);
+  };
+
+  const navigate = (dir: number) => {
+    if (!lightboxPost || !lightboxPost.images) return;
+    const len = lightboxPost.images.length;
+    setImageIndex((prev) => (prev + dir + len) % len);
+  };
+
+  return (
+    <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {mockPosts.map((post, i) => (
+        {posts.map((post, i) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20, rotate: (i % 5 - 2) * 1.5 }}
@@ -125,9 +60,9 @@ export default function InstagramClient() {
             className="cursor-pointer"
             onMouseEnter={() => setHoveredId(post.id)}
             onMouseLeave={() => setHoveredId(null)}
+            onClick={() => openLightbox(post)}
           >
-            {/* Polaroid */}
-            <div className="bg-white shadow-md rounded-sm p-2 pb-8 relative">
+            <div className="bg-white shadow-md rounded-sm p-2 pb-8 relative group">
               <div className="relative aspect-square overflow-hidden bg-[#fde8f0]">
                 {post.imageUrl && (
                   <Image
@@ -140,9 +75,15 @@ export default function InstagramClient() {
                     }}
                   />
                 )}
+
+                {post.images && post.images.length > 1 && (
+                  <div className="absolute top-2 right-2 bg-black/40 text-white rounded-full px-2 py-0.5 text-[10px] flex items-center gap-1 opacity-80 z-10 transition-opacity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="9" y1="3" x2="9" y2="21" /></svg>
+                    <span>{post.images.length}</span>
+                  </div>
+                )}
               </div>
 
-              {/* Caption on hover */}
               <AnimatePresence>
                 {hoveredId === post.id && (
                   <motion.div
@@ -151,8 +92,9 @@ export default function InstagramClient() {
                     exit={{ opacity: 0 }}
                     className="absolute inset-x-2 bottom-1 text-center"
                   >
-                    <p className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-xs leading-tight line-clamp-2">
-                      {post.caption}
+                    <p className="font-[family-name:var(--font-noto-serif-kr)] text-[#2a1a20] text-[10px] leading-tight line-clamp-2">
+                      <span className="font-semibold block mb-0.5">{formatDate(post.postedAt)}</span>
+                      {post.caption || ""}
                     </p>
                   </motion.div>
                 )}
@@ -160,8 +102,8 @@ export default function InstagramClient() {
 
               {(!hoveredId || hoveredId !== post.id) && (
                 <div className="absolute inset-x-2 bottom-1 text-center">
-                  <p className="text-[#2a1a20]/30 text-xs">
-                    ♥ {post.likes ? formatLikes(post.likes) : ""}
+                  <p className="text-[#2a1a20]/40 text-[10px] font-medium tracking-wide">
+                    {formatDate(post.postedAt)}
                   </p>
                 </div>
               )}
@@ -169,6 +111,124 @@ export default function InstagramClient() {
           </motion.div>
         ))}
       </div>
-    </div>
+
+      <AnimatePresence>
+        {lightboxPost && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-[#2a1a20]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 w-10 h-10 glass rounded-full text-white text-lg flex items-center justify-center hover:bg-white/20 transition-colors z-[110]"
+            >
+              ✕
+            </button>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row bg-white border border-white/10 rounded-sm overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Image Area */}
+              <div className="relative flex-1 bg-black flex items-center justify-center aspect-square md:aspect-auto">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={imageIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative w-full h-full flex items-center justify-center bg-black"
+                  >
+                    {(lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mp4') || (lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl)?.endsWith('.mov') ? (
+                      <video
+                        src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
+                        controls
+                        autoPlay
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    ) : (
+                      <Image
+                        src={lightboxPost.images?.[imageIndex] || lightboxPost.imageUrl || ""}
+                        alt="Instagram Media"
+                        fill
+                        className="object-contain"
+                      />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+
+                {lightboxPost.images && lightboxPost.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(-1); }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10 shadow-lg"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(1); }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 glass rounded-full text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10 shadow-lg"
+                    >
+                      →
+                    </button>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass px-3 py-1.5 rounded-full flex gap-1.5 items-center z-10">
+                      {lightboxPost.images.map((_, idx) => (
+                        <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-all ${idx === imageIndex ? 'bg-white scale-125' : 'bg-white/40'}`} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Sidebar / Caption Area */}
+              <div className="w-full md:w-80 lg:w-96 bg-white flex flex-col max-h-[40vh] md:max-h-[90vh]">
+                <div className="p-4 border-b border-gray-100 flex items-center gap-3 shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
+                    <div className="w-full h-full bg-white rounded-full overflow-hidden border border-white relative">
+                      <Image src="/images/hero.jpg" alt="Minju" fill className="object-cover" />
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 leading-none mb-0.5">minn.__.ju</h4>
+                    <span className="text-xs text-gray-500">{formatDate(lightboxPost.postedAt)}</span>
+                  </div>
+                </div>
+
+                <div className="p-4 flex-1 overflow-y-auto min-h-[100px] text-sm text-gray-800">
+                  <div className="flex gap-3 mb-2">
+                    <div className="w-8 h-8 shrink-0 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 p-[2px]">
+                      <div className="w-full h-full bg-white rounded-full overflow-hidden border border-white relative">
+                        <Image src="/images/hero.jpg" alt="Minju" fill className="object-cover" />
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-900 mr-2">minn.__.ju</span>
+                      <span className="font-[family-name:var(--font-noto-serif-kr)] whitespace-pre-wrap leading-relaxed">
+                        {lightboxPost.caption}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {lightboxPost.likes ? (
+                  <div className="p-4 border-t border-gray-100 flex shrink-0 items-center gap-2 text-gray-900">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#2a1a20]"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+                    <span className="text-sm font-semibold">{formatLikes(lightboxPost.likes)} likes</span>
+                  </div>
+                ) : null}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
