@@ -133,8 +133,8 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
             onClick={closeLightbox}
           >
             <button
-              onClick={closeLightbox}
-              className="absolute top-6 right-6 w-10 h-10 glass rounded-full text-white text-lg flex items-center justify-center hover:bg-white/20 transition-colors z-[110]"
+              onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+              className="absolute top-6 right-6 w-10 h-10 glass rounded-full text-white text-lg flex items-center justify-center hover:bg-white/20 transition-colors z-[110] cursor-pointer"
             >
               ✕
             </button>
@@ -180,13 +180,13 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
                   <>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
                     >
                       ←
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(1); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full text-white flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 shadow-lg cursor-pointer"
                     >
                       →
                     </button>

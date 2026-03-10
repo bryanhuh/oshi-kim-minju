@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -63,6 +63,17 @@ export default function GalleryClient({
     setLightboxIndex(newIndex);
     setLightboxImage(filtered[newIndex]);
   }, [lightboxIndex, filtered]);
+
+  useEffect(() => {
+    if (lightboxImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [lightboxImage]);
 
   return (
     <div className="px-6 max-w-7xl mx-auto">
@@ -257,7 +268,7 @@ export default function GalleryClient({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[#2a1a20]/90 backdrop-blur-md flex items-center justify-center"
+            className="fixed inset-0 z-50 h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/90 backdrop-blur-md flex items-center justify-center"
             onClick={() => setLightboxImage(null)}
           >
             <motion.div
