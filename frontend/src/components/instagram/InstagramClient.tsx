@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { InstagramPost } from "@/types";
@@ -39,6 +39,17 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
     const len = lightboxPost.images.length;
     setImageIndex((prev) => (prev + dir + len) % len);
   };
+
+  useEffect(() => {
+    if (lightboxPost) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [lightboxPost]);
 
   return (
     <>
@@ -118,7 +129,7 @@ export default function InstagramClient({ posts }: { posts: InstagramPost[] }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#2a1a20]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-[100] h-[100dvh] w-[100dvw] overflow-hidden bg-[#2a1a20]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
             onClick={closeLightbox}
           >
             <button
