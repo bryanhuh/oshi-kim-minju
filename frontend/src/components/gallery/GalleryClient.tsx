@@ -26,8 +26,6 @@ const Gallery3DScene = dynamic(() => import("./Gallery3DScene"), {
   ),
 });
 
-const CATEGORIES = ["All", "Photoshoot", "Drama Still", "Event", "Magazine"];
-
 export default function GalleryClient({
   initialImages,
   initialInstagram,
@@ -38,17 +36,12 @@ export default function GalleryClient({
   defaultSection?: "gallery" | "instagram";
 }) {
   const [section, setSection] = useState<"gallery" | "instagram">(defaultSection);
-  const [activeCategory, setActiveCategory] = useState("All");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
   const [galleryImageLoading, setGalleryImageLoading] = useState(true);
-  const filtered = activeCategory === "All"
-    ? initialImages
-    : initialImages.filter((img) => {
-      const cat = activeCategory.toLowerCase().replace(" ", "_");
-      return img.category === cat;
-    });
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const totalImages = initialImages.length;
 
   const openLightbox = useCallback((img: GalleryImage, index: number) => {
     if (img.source?.startsWith("AsiaChan|")) {
@@ -62,11 +55,11 @@ export default function GalleryClient({
   }, []);
 
   const navigate = useCallback((dir: number) => {
-    const newIndex = (lightboxIndex + dir + filtered.length) % filtered.length;
+    const newIndex = (lightboxIndex + dir + initialImages.length) % initialImages.length;
     setLightboxIndex(newIndex);
-    setLightboxImage(filtered[newIndex]);
+    setLightboxImage(initialImages[newIndex]);
     setGalleryImageLoading(true);
-  }, [lightboxIndex, filtered]);
+  }, [lightboxIndex, initialImages]);
 
   useEffect(() => {
     if (lightboxImage) {
@@ -130,7 +123,7 @@ export default function GalleryClient({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {/* View mode toggle + category filter */}
+            {/* View mode toggle */}
             <div className="flex flex-col items-center gap-5 mb-12">
               <div className="glass rounded-full p-1 flex gap-1">
                 <button
@@ -152,31 +145,6 @@ export default function GalleryClient({
                   3D Museum
                 </button>
               </div>
-
-              <AnimatePresence>
-                {viewMode === "grid" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex flex-wrap justify-center gap-3"
-                  >
-                    {CATEGORIES.map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveCategory(cat)}
-                        className={`px-5 py-2 rounded-full text-sm tracking-widest transition-all duration-300 ${activeCategory === cat
-                          ? "bg-[#f4a7c1] text-white pink-glow"
-                          : "glass text-[#2a1a20]/60 hover:text-[#e8809e]"
-                          }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
 
             {/* 3D Museum Mode */}
@@ -211,8 +179,21 @@ export default function GalleryClient({
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
-                    {filtered.map((img, i) => (
+                  {/* Loading state */}
+                  {imagesLoaded < Math.min(8, totalImages) && (
+                    <div className="flex flex-col items-center justify-center py-16">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
+                        className="w-8 h-8 border-2 border-[#f4a7c1] border-t-transparent rounded-full mb-4"
+                      />
+                      <p className="text-[#2a1a20]/40 text-xs tracking-widest">
+                        Loading gallery...
+                      </p>
+                    </div>
+                  )}
+                  <div className={`columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3 ${imagesLoaded < Math.min(8, totalImages) ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'} transition-opacity duration-500`}>
+                    {initialImages.map((img, i) => (
                       <motion.div
                         key={img.id}
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -228,8 +209,10 @@ export default function GalleryClient({
                             width={400}
                             height={i % 3 === 0 ? 600 : 400}
                             className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            onLoad={() => setImagesLoaded((prev) => prev + 1)}
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display = "none";
+                              setImagesLoaded((prev) => prev + 1);
                             }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-[#2a1a20]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-3">
