@@ -31,6 +31,7 @@ export default function InstagramClient({ posts: initialPosts }: { posts: Instag
   // Lightbox state
   const [lightboxPost, setLightboxPost] = useState<InstagramPost | null>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const loadMore = async () => {
     setLoading(true);
@@ -53,6 +54,7 @@ export default function InstagramClient({ posts: initialPosts }: { posts: Instag
   const openLightbox = (post: InstagramPost) => {
     setLightboxPost(post);
     setImageIndex(0);
+    setImageLoading(true);
   };
 
   const closeLightbox = () => {
@@ -62,6 +64,7 @@ export default function InstagramClient({ posts: initialPosts }: { posts: Instag
   const navigate = (dir: number) => {
     if (!lightboxPost || !lightboxPost.images) return;
     const len = lightboxPost.images.length;
+    setImageLoading(true);
     setImageIndex((prev) => (prev + dir + len) % len);
   };
 
@@ -240,7 +243,17 @@ export default function InstagramClient({ posts: initialPosts }: { posts: Instag
                           alt="Instagram Media"
                           fill
                           className="object-contain"
+                          onLoad={() => setImageLoading(false)}
                         />
+                      )}
+                      {imageLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-20">
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                            className="w-8 h-8 border-2 border-[#f4a7c1] border-t-transparent rounded-full"
+                          />
+                        </div>
                       )}
                     </motion.div>
                   </AnimatePresence>

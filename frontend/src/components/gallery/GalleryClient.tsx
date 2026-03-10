@@ -42,6 +42,7 @@ export default function GalleryClient({
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
+  const [galleryImageLoading, setGalleryImageLoading] = useState(true);
   const filtered = activeCategory === "All"
     ? initialImages
     : initialImages.filter((img) => {
@@ -57,12 +58,14 @@ export default function GalleryClient({
     }
     setLightboxImage(img);
     setLightboxIndex(index);
+    setGalleryImageLoading(true);
   }, []);
 
   const navigate = useCallback((dir: number) => {
     const newIndex = (lightboxIndex + dir + filtered.length) % filtered.length;
     setLightboxIndex(newIndex);
     setLightboxImage(filtered[newIndex]);
+    setGalleryImageLoading(true);
   }, [lightboxIndex, filtered]);
 
   useEffect(() => {
@@ -287,7 +290,18 @@ export default function GalleryClient({
                   width={800}
                   height={1000}
                   className="object-contain max-h-[80vh] rounded-xl"
+                  onLoad={() => setGalleryImageLoading(false)}
                 />
+
+                {galleryImageLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center rounded-xl">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                      className="w-8 h-8 border-2 border-[#f4a7c1] border-t-transparent rounded-full"
+                    />
+                  </div>
+                )}
 
                 {lightboxImage.source && (
                   <div className="absolute bottom-3 left-3 glass px-3 py-1 rounded-full">
