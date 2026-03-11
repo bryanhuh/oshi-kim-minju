@@ -11,7 +11,7 @@ const navLinks = [
   { href: "/dramas", label: "Dramas" },
   { href: "/gallery", label: "Gallery" },
   { href: "/izone", label: "IZ*ONE" },
-  { href: "/world", label: "Her World" },
+  // { href: "/world", label: "Her World" },
 ];
 
 export default function Navigation() {
